@@ -16,4 +16,11 @@ $(function () {
     html: true,
     content: '<span class="label label-warning"><i class="fa fa-check"></i> 是</span> <span class="label label-info"><i class="fa fa-times"></i> 否</span>'
   })
+
+  //select2
+  try {
+    $('.js-select2').select2()
+  } catch (e) {
+
+  }
 })

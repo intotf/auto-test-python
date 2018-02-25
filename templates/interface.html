@@ -17,6 +17,8 @@
     <link rel="shortcut icon" href="../static/img/favicon.ico">
     <link href="../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
     <link href="../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../static/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="../static/js/plugins/select2/css/select2.css" rel="stylesheet"/>
     <link href="../static/css/animate.min.css" rel="stylesheet">
     <link href="../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
 </head>
@@ -40,27 +42,96 @@
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
+        <div class="ibox">
             <div class="ibox-title">
-                <h5>增加新闻
-                    <small>包括自定义样式的复选和单选按钮</small>
-                </h5>
+                <h5>API接口</h5>
             </div>
             <div class="ibox-content">
                 <form class="form-horizontal m-t" id="AddNews">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">新闻标题</label>
+                        <label class="col-sm-2 control-label">URL</label>
 
                         <div class="col-sm-10">
-                            <input id="title" name="title" type="text" class="form-control">
+                            <input id="url" name="url" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">请求方法</label>
+
+                        <div class="col-sm-2">
+                            <div class="radio i-checks">
+                                <label>
+                                    <input type="radio" checked="" value="POST" name="method"> <i></i> POST</label>
+                            </div>
+                            <div class="radio i-checks">
+                                <label>
+                                    <input type="radio" value="GET" name="method"> <i></i> GET</label>
+                            </div>
+                        </div>
+                        <label class="col-sm-2 control-label">协议</label>
+
+                        <div class="col-sm-2">
+                            <div class="radio i-checks">
+                                <label>
+                                    <input type="radio" checked="" value="HTTP" name="protocol"> <i></i> HTTP</label>
+                            </div>
+                            <div class="radio i-checks">
+                                <label>
+                                    <input type="radio" value="GET" name="protocol"> <i></i> HTTPS</label>
+                            </div>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">副标题</label>
+                        <label class="col-sm-2 control-label">名称</label>
 
                         <div class="col-sm-10">
-                            <input type="text" class="form-control">
+                            <input id="name" name="name" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">请求参数</label>
+
+                        <div class="col-sm-5">
+                            <ul class="nav nav-pills" role="tablist">
+                              <li role="presentation" class="active"><a href="#tabFormData" aria-controls="tabFormData" role="tab" data-toggle="tab">表单[form-data]</a></li>
+                              <li role="presentation"><a href="#tabRESTful" aria-controls="tabRESTful" role="tab" data-toggle="tab">RESTful</a></li>
+                              <li role="presentation"><a href="#tabRaw" aria-controls="tabRaw" role="tab" data-toggle="tab">源数据[raw]</a></li>
+                            </ul>
+                             <!-- Nav tabs -->
+                              <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#tabFormData" aria-controls="tabFormData" role="tab" data-toggle="tab">表单[form-data]</a></li>
+                                <li role="presentation"><a href="#tabRESTful" aria-controls="tabRESTful" role="tab" data-toggle="tab">RESTful</a></li>
+                                <li role="presentation"><a href="#tabRaw" aria-controls="tabRaw" role="tab" data-toggle="tab">源数据[raw]</a></li>
+                              </ul>
+
+                              <!-- Tab panes -->
+                              <div class="tab-content m-t">
+                                <div role="tabpanel" class="tab-pane active" id="tabFormData">
+                                    <div class="col-sm-8">
+                                        <table class="table" width="100%%" border="0" cellspacing="0" cellpadding="0">
+                                          <tr>
+                                            <th scope="col">KEY</th>
+                                            <th scope="col">VALUE</th>
+                                            <th scope="col"><button type="button" class="btn btn-primary btn-xs">添加</button></th>
+                                          </tr>
+                                          <tr class="form-inline">
+                                            <td><input type="text" class="form-control input-sm"></td>
+                                            <td><input type="text" class="form-control input-sm"></td>
+                                            <td><button type="button" class="btn btn-danger btn-xs">删除</button></td>
+                                          </tr>
+                                          <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                          </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="tabRESTful">2</div>
+                                <div role="tabpanel" class="tab-pane" id="tabRaw"><textarea class="form-control" rows="3"></textarea></div>
+                              </div>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -95,36 +166,38 @@
                         </label>
 
                         <div class="col-sm-10">
+                            <div class="checkbox i-checks">
+                                <label>
+                                    <input type="checkbox" value=""> <i></i> 选项1</label>
+                            </div>
+                            <div class="checkbox i-checks">
+                                <label>
+                                    <input type="checkbox" value="" checked=""> <i></i> 选项2（选中）</label>
+                            </div>
+                            <div class="checkbox i-checks">
+                                <label>
+                                    <input type="checkbox" value="" disabled="" checked=""> <i></i> 选项3（选中并禁用）</label>
+                            </div>
+                            <div class="checkbox i-checks">
+                                <label>
+                                    <input type="checkbox" value="" disabled=""> <i></i> 选项4（禁用）</label>
+                            </div>
                             <div class="radio i-checks">
                                 <label>
-                                    <div class="iradio_square-green" style="position: relative;"><input
-                                            type="radio" value="option1" name="a"
-                                            style="position: absolute; opacity: 0;">
-                                        <ins class="iCheck-helper"></ins>
-                                    </div>
-                                    <i></i> 选项1</label>
+                                    <input type="radio" value="option1" name="a"> <i></i> 选项1</label>
+                            </div>
+                            <div class="radio i-checks">
                                 <label>
-                                    <div class="iradio_square-green" style="position: relative;">
-                                        <input type="radio" checked="" value="option2" name="a"
-                                               style="position: absolute; opacity: 0;">
-                                        <ins class="iCheck-helper"></ins>
-                                    </div>
-                                    <i></i> 选项2（选中）</label>
+                                    <input type="radio" checked="" value="option2" name="a"> <i></i> 选项2（选中）</label>
+                            </div>
+                            <div class="radio i-checks">
                                 <label>
-                                    <div class="iradio_square-green checked disabled"
-                                         style="position: relative;"><input type="radio" disabled=""
-                                                                            checked="" value="option2"
-                                                                            style="position: absolute; opacity: 0;">
-                                        <ins class="iCheck-helper"></ins>
-                                    </div>
-                                    <i></i> 选项3（选中并禁用）</label>
+                                    <input type="radio" disabled="" checked="" value="option2"> <i></i>
+                                    选项3（选中并禁用）</label>
+                            </div>
+                            <div class="radio i-checks">
                                 <label>
-                                    <div class="iradio_square-green disabled" style="position: relative;">
-                                        <input type="radio" disabled="" name="a"
-                                               style="position: absolute; opacity: 0;">
-                                        <ins class="iCheck-helper"></ins>
-                                    </div>
-                                    <i></i> 选项4（禁用）</label>
+                                    <input type="radio" disabled="" name="a"> <i></i> 选项4（禁用）</label>
                             </div>
                         </div>
                     </div>
@@ -188,6 +261,7 @@
 <script src="../static/js/jquery.min.js?v=2.1.4"></script>
 <script src="../static/js/bootstrap.min.js?v=3.3.6"></script>
 <script src="../static/js/content.min.js?v=1.0.0"></script>
+<script src="../static/js/plugins/select2/js/select2.min.js"></script>
 <script src="../static/js/plugins/iCheck/icheck.min.js"></script>
 
 <script src="../static/js/main.js?v1"></script>
