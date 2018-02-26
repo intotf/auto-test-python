@@ -14,7 +14,7 @@ $(function () {
   $('[data-toggle="popover"]').popover({
     selector: '.fa-trash-o',
     html: true,
-    content: '<span class="label label-warning"><i class="fa fa-check"></i> 是</span> <span class="label label-info"><i class="fa fa-times"></i> 否</span>'
+    content: '<span class="label label-warning"><i class="fa fa-check" @click="greet"></i> 是</span> <span class="label label-info"><i class="fa fa-times"></i> 否</span>'
   })
 
   //select2

@@ -29,13 +29,13 @@
         <h2>API接口</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="/">主页</a>
+                <a href="/" target="_top">主页</a>
             </li>
             <li>
-                <a href="#">API接口</a>
+                <a href="interface-list">API接口</a>
             </li>
             <li>
-                <strong>接口</strong>
+                <strong>添加接口</strong>
             </li>
         </ol>
     </div>
@@ -47,7 +47,7 @@
                 <h5>API接口</h5>
             </div>
             <div class="ibox-content">
-                <form class="form-horizontal m-t" id="AddNews">
+                <form class="form-horizontal m-t" id="addInterface">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">URL</label>
 
@@ -83,7 +83,7 @@
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">名称</label>
+                        <label class="col-sm-2 control-label">接口描述</label>
 
                         <div class="col-sm-10">
                             <input id="name" name="name" type="text" class="form-control">
@@ -91,161 +91,129 @@
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">请求参数</label>
+                        <label class="col-sm-2 control-label">请求头部(Headers)</label>
 
                         <div class="col-sm-5">
-                            <ul class="nav nav-pills" role="tablist">
-                              <li role="presentation" class="active"><a href="#tabFormData" aria-controls="tabFormData" role="tab" data-toggle="tab">表单[form-data]</a></li>
-                              <li role="presentation"><a href="#tabRESTful" aria-controls="tabRESTful" role="tab" data-toggle="tab">RESTful</a></li>
-                              <li role="presentation"><a href="#tabRaw" aria-controls="tabRaw" role="tab" data-toggle="tab">源数据[raw]</a></li>
-                            </ul>
-                             <!-- Nav tabs -->
-                              <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" class="active"><a href="#tabFormData" aria-controls="tabFormData" role="tab" data-toggle="tab">表单[form-data]</a></li>
-                                <li role="presentation"><a href="#tabRESTful" aria-controls="tabRESTful" role="tab" data-toggle="tab">RESTful</a></li>
-                                <li role="presentation"><a href="#tabRaw" aria-controls="tabRaw" role="tab" data-toggle="tab">源数据[raw]</a></li>
-                              </ul>
+                            <table class="table" width="100%%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <th scope="col">KEY</th>
+                                    <th scope="col">VALUE</th>
+                                    <th scope="col">
+                                        <button type="button" class="btn btn-primary btn-xs">添加</button>
+                                    </th>
+                                </tr>
+                                <tr class="form-inline">
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td><input type="text" class="form-control input-sm"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-xs">删除</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">请求内容(Body)</label>
 
-                              <!-- Tab panes -->
-                              <div class="tab-content m-t">
+                        <div class="col-sm-5">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#tabFormData"
+                                                                          aria-controls="tabFormData" role="tab"
+                                                                          data-toggle="tab">表单[form-data]</a></li>
+                                <li role="presentation"><a href="#tabRESTful" aria-controls="tabRESTful" role="tab"
+                                                           data-toggle="tab">RESTful</a></li>
+                                <li role="presentation"><a href="#tabRaw" aria-controls="tabRaw" role="tab"
+                                                           data-toggle="tab">源数据[raw]</a></li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content m-t">
                                 <div role="tabpanel" class="tab-pane active" id="tabFormData">
                                     <div class="col-sm-8">
                                         <table class="table" width="100%%" border="0" cellspacing="0" cellpadding="0">
-                                          <tr>
-                                            <th scope="col">KEY</th>
-                                            <th scope="col">VALUE</th>
-                                            <th scope="col"><button type="button" class="btn btn-primary btn-xs">添加</button></th>
-                                          </tr>
-                                          <tr class="form-inline">
-                                            <td><input type="text" class="form-control input-sm"></td>
-                                            <td><input type="text" class="form-control input-sm"></td>
-                                            <td><button type="button" class="btn btn-danger btn-xs">删除</button></td>
-                                          </tr>
-                                          <tr>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                          </tr>
+                                            <tr>
+                                                <th scope="col">KEY</th>
+                                                <th scope="col">VALUE</th>
+                                                <th scope="col">
+                                                    <button type="button" class="btn btn-primary btn-xs">添加</button>
+                                                </th>
+                                            </tr>
+                                            <tr class="form-inline">
+                                                <td><input type="text" class="form-control input-sm"></td>
+                                                <td><input type="text" class="form-control input-sm"></td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-xs">删除</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
                                         </table>
                                     </div>
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="tabRESTful">2</div>
-                                <div role="tabpanel" class="tab-pane" id="tabRaw"><textarea class="form-control" rows="3"></textarea></div>
-                              </div>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">描述信息</label>
-
-                        <div class="col-sm-10">
-                            <input id="description" name="description" type="text" class="form-control">
-                            <span
-                                    class="help-block m-b-none">在这里输入描述信息内容</span>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">分类</label>
-
-                        <div class="col-sm-10">
-                            <select id="category" name="category" class="js-select2">
-                                <option value="">===请选择===</option>
-                                <option value="AB">社会民生</option>
-                                <option value="CD">娱乐八卦</option>
-                                <option value="EF">体育彩票</option>
-                                <option value="XY">这是长长的选项</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">来源类型
-                            <br>
-                            <small class="text-navy">单选选项</small>
-                        </label>
-
-                        <div class="col-sm-10">
-                            <div class="checkbox i-checks">
-                                <label>
-                                    <input type="checkbox" value=""> <i></i> 选项1</label>
-                            </div>
-                            <div class="checkbox i-checks">
-                                <label>
-                                    <input type="checkbox" value="" checked=""> <i></i> 选项2（选中）</label>
-                            </div>
-                            <div class="checkbox i-checks">
-                                <label>
-                                    <input type="checkbox" value="" disabled="" checked=""> <i></i> 选项3（选中并禁用）</label>
-                            </div>
-                            <div class="checkbox i-checks">
-                                <label>
-                                    <input type="checkbox" value="" disabled=""> <i></i> 选项4（禁用）</label>
-                            </div>
-                            <div class="radio i-checks">
-                                <label>
-                                    <input type="radio" value="option1" name="a"> <i></i> 选项1</label>
-                            </div>
-                            <div class="radio i-checks">
-                                <label>
-                                    <input type="radio" checked="" value="option2" name="a"> <i></i> 选项2（选中）</label>
-                            </div>
-                            <div class="radio i-checks">
-                                <label>
-                                    <input type="radio" disabled="" checked="" value="option2"> <i></i>
-                                    选项3（选中并禁用）</label>
-                            </div>
-                            <div class="radio i-checks">
-                                <label>
-                                    <input type="radio" disabled="" name="a"> <i></i> 选项4（禁用）</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">发布选项<br>
-                            <small class="text-navy">复选框</small>
-                        </label>
-
-                        <div class="col-sm-10">
-                            <label class="checkbox-inline i-checks">
-                                <div class="icheckbox_square-green" style="position: relative;"><input
-                                        type="checkbox" value="option1"
-                                        style="position: absolute; opacity: 0;">
-                                    <ins class="iCheck-helper"></ins>
+                                <div role="tabpanel" class="tab-pane" id="tabRESTful">
+                                    <div class="col-sm-8">
+                                        <table class="table" width="100%%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <th scope="col">KEY</th>
+                                                <th scope="col">VALUE</th>
+                                                <th scope="col">
+                                                    <button type="button" class="btn btn-info btn-xs">添加</button>
+                                                </th>
+                                            </tr>
+                                            <tr class="form-inline">
+                                                <td><input type="text" class="form-control input-sm"></td>
+                                                <td><input type="text" class="form-control input-sm"></td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-xs">删除</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
-                                Web端</label>
-                            <label class="checkbox-inline i-checks">
-                                <div class="icheckbox_square-green" style="position: relative;"><input
-                                        type="checkbox" value="option2"
-                                        style="position: absolute; opacity: 0;">
-                                    <ins class="iCheck-helper"></ins>
+                                <div role="tabpanel" class="tab-pane" id="tabRaw"><textarea class="form-control"
+                                                                                            rows="3"></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">返回值实例</label>
+
+                        <div class="col-sm-5">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#tabReturnN" aria-controls="tabReturnN"
+                                                                          role="tab" data-toggle="tab">正常</a></li>
+                                <li role="presentation"><a href="#tabReturnA" aria-controls="tabReturnA" role="tab"
+                                                           data-toggle="tab">异常</a></li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content m-t">
+                                <div role="tabpanel" class="tab-pane active" id="tabReturnN">
+                                    <textarea class="form-control" rows="3"></textarea>
                                 </div>
-                                手机端</label>
+                                <div role="tabpanel" class="tab-pane" id="tabReturnA">
+                                    <textarea class="form-control" rows="3"></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">发布时间<br>
-                            <small class="text-navy">时间选择</small>
-                        </label>
-
-                        <div class="col-sm-10">
-                            <input id="ftime" name="ftime" class="laydate-icon form-control layer-date"
-                                   placeholder="YYYY-MM-DD hh:mm:ss"
-                                   onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">新闻内容</label>
-
-                        <div class="col-sm-10">
-                            <div class="summernote"></div>
-
-                        </div>
-                    </div>
-
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">

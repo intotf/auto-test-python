@@ -34,10 +34,16 @@ def interfaceList():
     return render_template('interface-list.html')
 
 
-# 接口列表页
+# 添加接口页
 @app.route('/interface')
 def interface():
     return render_template('interface.html')
+
+
+# 接口信息页
+@app.route('/interface-info')
+def interfaceInfo():
+    return render_template('interface-info.html')
 
 
 if __name__ == '__main__':

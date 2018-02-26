@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <title>自动化测试+ - 接口信息</title>
+
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="../static/img/favicon.ico">
+    <link href="../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../static/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="../static/js/plugins/select2/css/select2.css" rel="stylesheet"/>
+    <link href="../static/css/animate.min.css" rel="stylesheet">
+    <link href="../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>API接口</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="/" target="_top">主页</a>
+            </li>
+            <li>
+                <a href="interface-info">API接口</a>
+            </li>
+            <li>
+                <strong>接口信息</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>接口信息</h5>
+            </div>
+            <div class="ibox-content">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation"><a href="#tabDoc" aria-controls="tabDoc" role="tab" data-toggle="tab">文档</a>
+                    </li>
+                    <li role="presentation" class="active"><a href="#tabTest" aria-controls="tabTest" role="tab"
+                                                              data-toggle="tab">测试</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content m-t">
+                    <div role="tabpanel" class="tab-pane" id="tabDoc">
+
+
+                        <table width="100%" class="table table-striped table-hover">
+                            <tbody>
+                            <tr>
+                                <td width="16%"><strong>接口描述</strong></td>
+                                <td width="84%"> API测试接口1</td>
+                            </tr>
+                            <tr>
+                                <td><strong>请求方法</strong></td>
+                                <td>POST</td>
+                            </tr>
+                            <tr>
+                                <td><strong>协议</strong></td>
+                                <td>HTTP</td>
+                            </tr>
+                            <tr>
+                                <td><strong>URL</strong></td>
+                                <td>www.baidu.com</td>
+                            </tr>
+                            <tr>
+                                <td><strong>请求参数【表单form-data】</strong></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td><strong>请求参数【RESTful】</strong></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td><strong>请求参数【源数据raw】</strong></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td><strong>返回值【正常】</strong></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td><strong>返回值【异常】</strong></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane active" id="tabTest">
+                        <form class="form-horizontal m-t" id="addInterface">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">URL</label>
+
+                                <div class="col-sm-10">
+                                    <input id="url" name="url" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">请求方法</label>
+
+                                <div class="col-sm-2">
+                                    <div class="radio i-checks">
+                                        <label>
+                                            <input type="radio" checked="" value="POST" name="method"> <i></i>
+                                            POST</label>
+                                    </div>
+                                    <div class="radio i-checks">
+                                        <label>
+                                            <input type="radio" value="GET" name="method"> <i></i> GET</label>
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 control-label">协议</label>
+
+                                <div class="col-sm-2">
+                                    <div class="radio i-checks">
+                                        <label>
+                                            <input type="radio" checked="" value="HTTP" name="protocol"> <i></i>
+                                            HTTP</label>
+                                    </div>
+                                    <div class="radio i-checks">
+                                        <label>
+                                            <input type="radio" value="GET" name="protocol"> <i></i> HTTPS</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">接口描述</label>
+
+                                <div class="col-sm-10">
+                                    <input id="name" name="name" type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">请求头部(Headers)</label>
+
+                                <div class="col-sm-5">
+                                    <table class="table" width="100%%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <th width="39%" scope="col">KEY</th>
+                                            <th width="40%" scope="col">VALUE</th>
+                                            <th width="21%" scope="col">
+                                                操作
+                                            </th>
+                                        </tr>
+                                        <tr class="form-inline">
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal">构造器</button>
+                                                <button type="button" class="btn btn-danger btn-xs">删除</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">请求内容(Body)</label>
+
+                                <div class="col-sm-5">
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li role="presentation" class="active"><a href="#tabFormData"
+                                                                                  aria-controls="tabFormData" role="tab"
+                                                                                  data-toggle="tab">表单[form-data]</a>
+                                        </li>
+                                        <li role="presentation"><a href="#tabRESTful" aria-controls="tabRESTful"
+                                                                   role="tab"
+                                                                   data-toggle="tab">RESTful</a></li>
+                                        <li role="presentation"><a href="#tabRaw" aria-controls="tabRaw" role="tab"
+                                                                   data-toggle="tab">源数据[raw]</a></li>
+                                    </ul>
+
+                                    <!-- Tab panes -->
+                                    <div class="tab-content m-t">
+                                        <div role="tabpanel" class="tab-pane active" id="tabFormData">
+                                            <div class="col-sm-10">
+                                                <table class="table" width="100%%" border="0" cellspacing="0"
+                                                       cellpadding="0">
+                                                    <tr>
+                                                        <th width="39%" scope="col">KEY</th>
+                                                        <th width="40%" scope="col">VALUE</th>
+                                                        <th width="21%" scope="col">
+                                                            操作
+                                                        </th>
+                                                    </tr>
+                                                    <tr class="form-inline">
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-primary btn-xs">构造器
+                                                            </button>
+                                                            <button type="button" class="btn btn-danger btn-xs">删除
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="tabRESTful">
+                                            <div class="col-sm-10">
+
+                                                <table class="table" width="100%%" border="0" cellspacing="0"
+                                                       cellpadding="0">
+                                                    <tr>
+                                                        <th width="39%" scope="col">KEY</th>
+                                                        <th width="40%" scope="col">VALUE</th>
+                                                        <th width="21%" scope="col">
+                                                            操作
+                                                        </th>
+                                                    </tr>
+                                                    <tr class="form-inline">
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-info btn-xs">构造器
+                                                            </button>
+                                                            <button type="button" class="btn btn-danger btn-xs">删除
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="tabRaw"><textarea class="form-control"
+                                                                                                    rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">返回结果</label>
+
+                                <div class="col-sm-5">
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li role="presentation" class="active">
+                                            <a href="#tabResult" aria-controls="tabResult" role="tab" data-toggle="tab">返回结果</a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="#tabResultHeaders" aria-controls="tabResultHeaders" role="tab"
+                                               data-toggle="tab">请求头部</a></li>
+                                        <li role="presentation">
+                                            <a href="#tabResultBody" aria-controls="tabResultBody" role="tab"
+                                               data-toggle="tab">请求内容</a></li>
+                                    </ul>
+
+                                    <!-- Tab panes -->
+                                    <div class="tab-content m-t">
+                                        <div role="tabpanel" class="tab-pane active" id="tabResult"><textarea
+                                                class="form-control"
+                                                rows="3"></textarea>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="tabResultHeaders">
+                                            <textarea class="form-control"
+                                                      rows="3"></textarea>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="tabResultBody"><textarea
+                                                class="form-control"
+                                                rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit">发送测试</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--构造器弹窗-->
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated fadeIn">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span>
+                </button>
+
+                <h4 class="modal-title"><i class="fa fa-laptop modal-icon"></i> 构造器</h4>
+            </div>
+            <div class="modal-body">
+<form class="form-horizontal m-t" id="constructor">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">类型</label>
+
+                        <div class="col-sm-10">
+                            <select class="form-control" name="type" id="">
+                                <option value="">类型一</option>
+                                <option value="">类型二</option>
+                                <option value="">类型三</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button class="btn btn-primary" type="submit">保存内容</button>
+                            <button class="btn btn-white">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/js/jquery.min.js?v=2.1.4"></script>
+<script src="../static/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="../static/js/content.min.js?v=1.0.0"></script>
+<script src="../static/js/plugins/select2/js/select2.min.js"></script>
+<script src="../static/js/plugins/iCheck/icheck.min.js"></script>
+
+<script src="../static/js/main.js?v1"></script>
+<script>
+  $(document).ready(function () {
+    $('.i-checks').iCheck({
+      checkboxClass: 'icheckbox_square-green',
+      radioClass: 'iradio_square-green'
+    })
+  })
+</script>
+</body>
+</html>
