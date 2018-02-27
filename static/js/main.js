@@ -1,4 +1,5 @@
 $(function () {
+  /*
   //点击删除弹出提示框时确认操作
   $(document).on('click', '.popover-content .label-warning', function () {
     $(this).parentsUntil('tbody').slideUp(function () {
@@ -16,6 +17,7 @@ $(function () {
     html: true,
     content: '<span class="label label-warning"><i class="fa fa-check" @click="greet"></i> 是</span> <span class="label label-info"><i class="fa fa-times"></i> 否</span>'
   })
+  */
 
   //select2
   try {
