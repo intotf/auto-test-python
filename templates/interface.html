@@ -17,6 +17,7 @@
     <link rel="shortcut icon" href="../static/img/favicon.ico">
     <link href="../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
     <link href="../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
     <link href="../static/css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="../static/js/plugins/select2/css/select2.css" rel="stylesheet"/>
     <link href="../static/css/animate.min.css" rel="stylesheet">
@@ -24,204 +25,233 @@
 </head>
 
 <body class="gray-bg">
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-10">
-        <h2>API接口</h2>
-        <ol class="breadcrumb">
-            <li>
-                <a href="/" target="_top">主页</a>
-            </li>
-            <li>
-                <a href="interface-list">API接口</a>
-            </li>
-            <li>
-                <strong>添加接口</strong>
-            </li>
-        </ol>
+<div id="app">
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>API接口</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="/" target="_top">主页</a>
+                </li>
+                <li>
+                    <a href="interface-list">API接口</a>
+                </li>
+                <li>
+                    <strong>添加接口</strong>
+                </li>
+            </ol>
+        </div>
     </div>
-</div>
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="col-lg-12">
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5>API接口</h5>
-            </div>
-            <div class="ibox-content">
-                <form class="form-horizontal m-t" id="addInterface">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">URL</label>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>API接口</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="addInterface" @submit.prevent="validateBeforeSubmit">
+                        <div class="form-group" :class="{ 'has-error': errors.has('group_id') }">
+                            <label class="col-sm-2 control-label">接口分组</label>
 
-                        <div class="col-sm-10">
-                            <input id="url" name="url" type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">请求方法</label>
-
-                        <div class="col-sm-2">
-                            <div class="radio i-checks">
-                                <label>
-                                    <input type="radio" checked="" value="POST" name="method"> <i></i> POST</label>
-                            </div>
-                            <div class="radio i-checks">
-                                <label>
-                                    <input type="radio" value="GET" name="method"> <i></i> GET</label>
+                            <div class="col-sm-10">
+                                <select id="group_id" name="group_id" v-model="inface.group_id" v-validate="'required'" class="form-control">
+                                    <option  v-for="(group, index) in groups" :value="group.id">[[group.group_name]]</option>
+                                </select>
+                                <span v-show="errors.has('group_id')" class="help-block m-b-none">请选择接口分组</span>
                             </div>
                         </div>
-                        <label class="col-sm-2 control-label">协议</label>
+                        <div class="form-group" :class="{ 'has-error': errors.has('uri') }">
+                            <label class="col-sm-2 control-label">URL</label>
 
-                        <div class="col-sm-2">
-                            <div class="radio i-checks">
-                                <label>
-                                    <input type="radio" checked="" value="HTTP" name="protocol"> <i></i> HTTP</label>
-                            </div>
-                            <div class="radio i-checks">
-                                <label>
-                                    <input type="radio" value="GET" name="protocol"> <i></i> HTTPS</label>
+                            <div class="col-sm-10">
+                                <input id="uri" name="uri" type="text" class="form-control" v-model="inface.uri"
+                                       v-validate="'required'">
+                                <span v-show="errors.has('uri')" class="help-block m-b-none">请输入URL</span>
                             </div>
                         </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">接口描述</label>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">请求方法</label>
 
-                        <div class="col-sm-10">
-                            <input id="name" name="name" type="text" class="form-control">
+                            <div class="col-sm-2">
+                                <div class="radio i-checks">
+                                    <label>
+                                        <input type="radio" checked="" value="POST" name="method"
+                                               v-model="inface.method"> <i></i> POST</label>
+                                </div>
+                                <div class="radio i-checks">
+                                    <label>
+                                        <input type="radio" value="GET" name="method" v-model="inface.method"> <i></i>
+                                        GET</label>
+                                </div>
+                            </div>
+                            <label class="col-sm-2 control-label">协议</label>
+
+                            <div class="col-sm-2">
+                                <div class="radio i-checks">
+                                    <label>
+                                        <input type="radio" checked="" value="HTTP" name="protocol"
+                                               v-model="inface.protocol"> <i></i>
+                                        HTTP</label>
+                                </div>
+                                <div class="radio i-checks">
+                                    <label>
+                                        <input type="radio" value="GET" name="protocol" v-model="inface.protocol">
+                                        <i></i> HTTPS</label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">请求头部(Headers)</label>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group" :class="{ 'has-error': errors.has('title') }">
+                            <label class="col-sm-2 control-label">接口描述</label>
 
-                        <div class="col-sm-5">
-                            <table class="table" width="100%%" border="0" cellspacing="0" cellpadding="0">
-                                <tr>
-                                    <th scope="col">KEY</th>
-                                    <th scope="col">VALUE</th>
-                                    <th scope="col">
-                                        <button type="button" class="btn btn-primary btn-xs">添加</button>
-                                    </th>
-                                </tr>
-                                <tr class="form-inline">
-                                    <td><input type="text" class="form-control input-sm"></td>
-                                    <td><input type="text" class="form-control input-sm"></td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger btn-xs">删除</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            </table>
+                            <div class="col-sm-10">
+                                <input id="title" name="title" type="text" class="form-control" v-model="inface.title"
+                                       v-validate="'required'">
+                                <span v-show="errors.has('title')" class="help-block m-b-none">请输入接口描述</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">请求内容(Body)</label>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">请求头部(Headers)</label>
 
-                        <div class="col-sm-5">
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" class="active"><a href="#tabFormData"
-                                                                          aria-controls="tabFormData" role="tab"
-                                                                          data-toggle="tab">表单[form-data]</a></li>
-                                <li role="presentation"><a href="#tabRESTful" aria-controls="tabRESTful" role="tab"
-                                                           data-toggle="tab">RESTful</a></li>
-                                <li role="presentation"><a href="#tabRaw" aria-controls="tabRaw" role="tab"
-                                                           data-toggle="tab">源数据[raw]</a></li>
-                            </ul>
+                            <div class="col-sm-5">
+                                <table class="table" width="100%%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <th scope="col">KEY</th>
+                                        <th scope="col">VALUE</th>
+                                        <th scope="col">
+                                            <button type="button" class="btn btn-primary btn-xs"
+                                                    @click="addKey('headers')">添加
+                                            </button>
+                                        </th>
+                                    </tr>
+                                    <tr class="form-inline" v-for="(header, h_index) in inface.headers">
+                                        <td><input type="text" class="form-control input-sm" v-model="header[0]"></td>
+                                        <td><input type="text" class="form-control input-sm" v-model="header[1]"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-xs"
+                                                    @click="delKey('headers', h_index)">删除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">请求内容(Body)</label>
 
-                            <!-- Tab panes -->
-                            <div class="tab-content m-t">
-                                <div role="tabpanel" class="tab-pane active" id="tabFormData">
-                                    <div class="col-sm-8">
-                                        <table class="table" width="100%%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <th scope="col">KEY</th>
-                                                <th scope="col">VALUE</th>
-                                                <th scope="col">
-                                                    <button type="button" class="btn btn-primary btn-xs">添加</button>
-                                                </th>
-                                            </tr>
-                                            <tr class="form-inline">
-                                                <td><input type="text" class="form-control input-sm"></td>
-                                                <td><input type="text" class="form-control input-sm"></td>
-                                                <td>
-                                                    <button type="button" class="btn btn-danger btn-xs">删除</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                        </table>
+                            <div class="col-sm-5">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active"><a href="#tabFormData"
+                                                                              aria-controls="tabFormData" role="tab"
+                                                                              data-toggle="tab">表单[form-data]</a></li>
+                                    <li role="presentation"><a href="#tabRESTful" aria-controls="tabRESTful" role="tab"
+                                                               data-toggle="tab">RESTful</a></li>
+                                    <li role="presentation"><a href="#tabRaw" aria-controls="tabRaw" role="tab"
+                                                               data-toggle="tab">源数据[raw]</a></li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content m-t">
+                                    <div role="tabpanel" class="tab-pane active" id="tabFormData">
+                                        <div class="col-sm-8">
+                                            <table class="table" width="100%%" border="0" cellspacing="0"
+                                                   cellpadding="0">
+                                                <tr>
+                                                    <th scope="col">KEY</th>
+                                                    <th scope="col">VALUE</th>
+                                                    <th scope="col">
+                                                        <button type="button" class="btn btn-primary btn-xs"
+                                                                @click="addKey('form_data')">添加
+                                                        </button>
+                                                    </th>
+                                                </tr>
+                                                <tr class="form-inline" v-for="(form, f_index) in inface.form_data">
+                                                    <td><input type="text" class="form-control input-sm"
+                                                               v-model="form[0]"></td>
+                                                    <td><input type="text" class="form-control input-sm"
+                                                               v-model="form[1]"></td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-xs"
+                                                                @click="delKey('form_data', f_index)">删除
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="tabRESTful">
+                                        <div class="col-sm-8">
+                                            <table class="table" width="100%%" border="0" cellspacing="0"
+                                                   cellpadding="0">
+                                                <tr>
+                                                    <th scope="col">KEY</th>
+                                                    <th scope="col">VALUE</th>
+                                                    <th scope="col">
+                                                        <button type="button" class="btn btn-info btn-xs"
+                                                                @click="addKey('restful')">添加
+                                                        </button>
+                                                    </th>
+                                                </tr>
+                                                <tr class="form-inline" v-for="(rest, r_index) in inface.restful">
+                                                    <td><input type="text" class="form-control input-sm"
+                                                               v-model="rest[0]"></td>
+                                                    <td><input type="text" class="form-control input-sm"
+                                                               v-model="rest[1]"></td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-xs"
+                                                                @click="delKey('restful', r_index)">删除
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="tabRaw"><textarea class="form-control"
+                                                                                                v-model="inface.raw"
+                                                                                                rows="3"></textarea>
                                     </div>
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="tabRESTful">
-                                    <div class="col-sm-8">
-                                        <table class="table" width="100%%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <th scope="col">KEY</th>
-                                                <th scope="col">VALUE</th>
-                                                <th scope="col">
-                                                    <button type="button" class="btn btn-info btn-xs">添加</button>
-                                                </th>
-                                            </tr>
-                                            <tr class="form-inline">
-                                                <td><input type="text" class="form-control input-sm"></td>
-                                                <td><input type="text" class="form-control input-sm"></td>
-                                                <td>
-                                                    <button type="button" class="btn btn-danger btn-xs">删除</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                            </tr>
-                                        </table>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">返回值实例</label>
+
+                            <div class="col-sm-5">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active"><a href="#tabReturnN"
+                                                                              aria-controls="tabReturnN"
+                                                                              role="tab" data-toggle="tab">正常</a></li>
+                                    <li role="presentation"><a href="#tabReturnA" aria-controls="tabReturnA" role="tab"
+                                                               data-toggle="tab">异常</a></li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content m-t">
+                                    <div role="tabpanel" class="tab-pane active" id="tabReturnN">
+                                        <textarea class="form-control" rows="3"
+                                                  v-model="inface.return_normal"></textarea>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="tabReturnA">
+                                        <textarea class="form-control" rows="3"
+                                                  v-model="inface.return_abnormal"></textarea>
                                     </div>
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="tabRaw"><textarea class="form-control"
-                                                                                            rows="3"></textarea></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">返回值实例</label>
-
-                        <div class="col-sm-5">
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" class="active"><a href="#tabReturnN" aria-controls="tabReturnN"
-                                                                          role="tab" data-toggle="tab">正常</a></li>
-                                <li role="presentation"><a href="#tabReturnA" aria-controls="tabReturnA" role="tab"
-                                                           data-toggle="tab">异常</a></li>
-                            </ul>
-
-                            <!-- Tab panes -->
-                            <div class="tab-content m-t">
-                                <div role="tabpanel" class="tab-pane active" id="tabReturnN">
-                                    <textarea class="form-control" rows="3"></textarea>
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="tabReturnA">
-                                    <textarea class="form-control" rows="3"></textarea>
-                                </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-primary" type="submit">保存内容</button>
+                                <button class="btn btn-white">取消</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="form-group">
-                        <div class="col-sm-4 col-sm-offset-2">
-                            <button class="btn btn-primary" type="submit">保存内容</button>
-                            <button class="btn btn-white">取消</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -231,7 +261,10 @@
 <script src="../static/js/content.min.js?v=1.0.0"></script>
 <script src="../static/js/plugins/select2/js/select2.min.js"></script>
 <script src="../static/js/plugins/iCheck/icheck.min.js"></script>
-
+<script src="../static/js/plugins/toastr/toastr.min.js"></script>
+<script src="../static/js/vue.js"></script>
+<script src="../static/js/vee-validate.js"></script>
+<script src="../static/js/axios.min.js"></script>
 <script src="../static/js/main.js?v1"></script>
 <script>
   $(document).ready(function () {
@@ -239,6 +272,83 @@
       checkboxClass: 'icheckbox_square-green',
       radioClass: 'iradio_square-green'
     })
+  })
+
+  Vue.use(VeeValidate)
+
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    data: {
+      groups: [],
+      inface: {
+        uri: '',
+        method: 'POST',
+        protocol: 'HTTP',
+        title: '',
+        headers: [],
+        form_data: [],
+        restful: [],
+        raw: '',
+        return_normal: '',
+        return_abnormal: ''
+      }
+    },
+    beforeCreate: function () {
+      var app = this
+
+      /**
+       * 获取分组列表
+       */
+      axios.get('http://10.100.99.7:5585/group/get')    // /static/mock/group-list.json
+        .then(function (res) {
+          app.groups = res.data.groups
+        })
+        .catch(function (error) {
+          toastr.error(error)
+        })
+    },
+    methods: {
+      addKey: function (key) {
+        this.inface[key].push([null, null])
+      },
+      delKey: function (key, index) {
+        this.inface[key].splice(index, 1)
+      },
+      validateBeforeSubmit: function () {
+        var app = this
+        this.$validator.validateAll().then(function (result) {
+          if (result) {
+            axios.post('http://10.100.99.7:5585/data/savedata', {
+              group_id: app.inface.group_id,
+              uri: app.inface.uri,
+              method: app.inface.method,
+              protocol: app.inface.protocol,
+              title: app.inface.title,
+              headers: app.inface.headers,
+              form_data: app.inface.form_data,
+              restful: app.inface.restful,
+              raw: app.inface.raw,
+              return_normal: app.inface.return_normal,
+              return_abnormal: app.inface.return_abnormal
+            })
+              .then(function (res) {
+                if (res.data) {
+                  toastr.success('添加接口成功')
+                  setTimeout(function () {
+                    window.location = './interface-list'
+                  }, 1000)
+                } else {
+                  toastr.error('添加接口失败')
+                }
+              })
+              .catch(function (error) {
+                toastr.error(error)
+              })
+          }
+        })
+      }
+    }
   })
 </script>
 </body>

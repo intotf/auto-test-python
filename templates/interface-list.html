@@ -17,6 +17,7 @@
     <link rel="shortcut icon" href="../static/img/favicon.ico">
     <link href="../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
     <link href="../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
     <link href="../static/css/animate.min.css" rel="stylesheet">
     <link href="../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
 </head>
@@ -53,8 +54,8 @@
                         <tbody>
                         <tr v-for="(group, index) in groups">
                             <td width="80%">[[group.group_name]]</td>
-                            <td width="20%" class="table-action"><a href="javascript:;" title="编辑"><i
-                                    class="fa fa-pencil"></i></a> <a href="javascript:;" @click="deleteGroup(group.id, index)"
+                            <td width="20%" class="table-action"><a href="javascript:;" title="编辑" data-toggle="modal" data-target="#editGroup" @click="openEditGroup(group.id, group.group_name)"><i
+                                    class="fa fa-pencil"></i></a> <a href="javascript:;" title="删除" @click="deleteGroup(group.id, index)"
                                                                      data-toggle="popover" data-placement="left"><i
                                     class="fa fa-trash-o"></i></a></td>
                         </tr>
@@ -69,7 +70,7 @@
                     <h5>接口列表</h5>
 
                     <div class="ibox-tools">
-                        <a href="javascript:;" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle"></i>
+                        <a href="interface" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle"></i>
                             添加接口</a>
                         <a href="javascript:;" class="btn btn-info btn-xs"><i class="fa fa-flash"></i> 导入接口</a>
                     </div>
@@ -79,32 +80,19 @@
                         <thead>
                         <tr class="text-center">
 
-                            <th width="3%"></th>
-                            <th width="18%">接口名称</th>
-                            <th width="37%">接口URI</th>
-                            <th width="18%">最近更新者</th>
-                            <th width="15%">更新日期</th>
-                            <th width="9%">操作</th>
+                            <th width="7%"></th>
+                            <th width="22%">接口名称</th>
+                            <th width="39%">接口URI</th>
+                            <th width="19%">更新日期</th>
+                            <th width="13%">操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
+                        <tr v-for="(inface, index) in interfaces">
                             <td>&nbsp;</td>
-                            <td>测试1</td>
-                            <td><span class="label label-success">POST</span> www.baidu.com</td>
-                            <td>55</td>
-                            <td>2014.11.11</td>
-                            <td class="table-action"><a href="javascript:;" title="编辑"><i
-                                    class="fa fa-pencil"></i></a> <a href="javascript:;" data-toggle="popover"
-                                                                     data-placement="top"><i
-                                    class="fa fa-trash-o"></i></a></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td>测试2</td>
-                            <td><span class="label label-success">GET</span> www.baidu.com</td>
-                            <td>55</td>
-                            <td>2014.11.11</td>
+                            <td>[[inface.title]]</td>
+                            <td><span class="label label-success">[[inface.method]]</span> [[inface.uri]]</td>
+                            <td>[[inface.update_time]]</td>
                             <td class="table-action"><a href="javascript:;" title="编辑"><i
                                     class="fa fa-pencil"></i></a> <a href="javascript:;" data-toggle="popover"
                                                                      data-placement="top"><i
@@ -117,7 +105,7 @@
         </div>
     </div>
 
-    <!--分组弹窗-->
+    <!--新建分组弹窗-->
     <div class="modal" id="addGroup" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated fadeIn">
@@ -147,11 +135,43 @@
             </div>
         </div>
     </div>
+    <!--修改分组弹窗-->
+    <div class="modal" id="editGroup" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated fadeIn">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span
+                            class="sr-only">关闭</span>
+                    </button>
+
+                    <h4 class="modal-title"><i class="fa fa-laptop modal-icon"></i> 修改分组</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">分组名称</label>
+
+                            <div class="col-sm-9">
+                                <input type="hidden" v-model="modi_id">
+                                <input type="text" class="form-control" placeholder="分组名称" v-model="new_group_name">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" @click="editGroup(modi_id)">修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="../static/js/jquery.min.js?v=2.1.4"></script>
 <script src="../static/js/bootstrap.min.js?v=3.3.6"></script>
 <script src="../static/js/plugins/pace/pace.min.js"></script>
+<script src="../static/js/plugins/toastr/toastr.min.js"></script>
 <script src="../static/js/vue.js"></script>
 <script src="../static/js/axios.min.js"></script>
 <script src="../static/js/main.js?v1"></script>
@@ -161,21 +181,39 @@
     delimiters: ['[[', ']]'],
     data: {
       groups: [],
-      new_group_name: null
+      modi_id: null,
+      new_group_name: null,
+      interfaces: []
     },
     beforeCreate: function () {
       var app = this
+
+      /**
+       * 获取分组列表
+       */
       axios.get('http://10.100.99.7:5585/group/get')    // /static/mock/group-list.json
         .then(function (res) {
           app.groups = res.data.groups
         })
         .catch(function (error) {
-          console.log(error)
+          toastr.error(error)
+        })
+
+      /**
+       * 获取接口列表
+       */
+      axios.get('http://10.100.99.7:5585/data/getdata')
+        .then(function (res) {
+          app.interfaces = res.data.tb_data
+        })
+        .catch(function (error) {
+          toastr.error(error)
         })
     },
     methods: {
-      greet: function (index) {
-        this.groups.splice(index, 1)
+      openEditGroup: function (id, name) {
+        this.modi_id = id
+        this.new_group_name = name
       },
       addGroup: function () {
         var app = this
@@ -185,12 +223,47 @@
           .then(function (res) {
             if (res.data) {
               app.groups.push({ id: res.data.id, group_name: res.data.group_name})
+              toastr.success('新建分组成功')
             } else {
-              console.log('新建分组失败')
+              toastr.error('新建分组失败')
             }
           })
           .catch(function (error) {
-            console.log(error)
+            toastr.error(error)
+          })
+          .then(function () {
+            app.new_group_name = null
+            $('[data-dismiss="modal"]').trigger('click')
+          })
+      },
+      editGroup: function (id) {
+        var app = this
+        console.log({
+          id: id,
+          group_name: app.new_group_name
+        })
+        axios.post('http://10.100.99.7:5585/group/edit', {
+          id: id,
+          group_name: app.new_group_name
+        })
+          .then(function (res) {
+            if (res.data) {
+              app.groups.find(function (item, index) {
+                if (item.id === res.data.id) {
+                  item.group_name = res.data.group_name
+                }
+              })
+              toastr.success('修改分组成功')
+            } else {
+              toastr.error('修改分组失败')
+            }
+          })
+          .catch(function (error) {
+            toastr.error(error)
+          })
+          .then(function () {
+            app.new_group_name = null
+            $('[data-dismiss="modal"]').trigger('click')
           })
       },
       deleteGroup: function (id, index) {
@@ -201,13 +274,13 @@
           .then(function (res) {
             if (res.data) {
               app.groups.splice(index, 1)
-              console.log('删除成功')
+              toastr.success('删除分组成功')
             } else {
-              console.log('删除失败')
+              toastr.error('删除分组失败')
             }
           })
           .catch(function (error) {
-            console.log(error)
+            toastr.error(error)
           })
       }
     }

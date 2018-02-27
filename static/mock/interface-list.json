@@ -1,0 +1,21 @@
+{
+  "pages": 8,
+  "page": 1,
+  "group_id": 3,
+  "tb_data": [
+    {
+      "id": 1,
+      "title": "测试接口1",
+      "method": "POST",
+      "uri": "www.baidu.com",
+      "update_time": "2017.11.20"
+    },
+    {
+      "id": 2,
+      "title": "测试接口2",
+      "method": "GET",
+      "uri": "www.sina.com",
+      "update_time": "2017.11.20"
+    }
+  ]
+}
