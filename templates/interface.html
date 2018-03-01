@@ -42,6 +42,8 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
+        <input type="hidden" v-model="control.operate">
+        <input type="hidden" v-model="control.api_id">
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-title">
@@ -53,8 +55,10 @@
                             <label class="col-sm-2 control-label">接口分组</label>
 
                             <div class="col-sm-10">
-                                <select id="group_id" name="group_id" v-model="inface.group_id" v-validate="'required'" class="form-control">
-                                    <option  v-for="(group, index) in groups" :value="group.id">[[group.group_name]]</option>
+                                <select id="group_id" name="group_id" v-model="inface.group_id" v-validate="'required'"
+                                        class="form-control">
+                                    <option v-for="(group, index) in groups" :value="group.id">[[group.group_name]]
+                                    </option>
                                 </select>
                                 <span v-show="errors.has('group_id')" class="help-block m-b-none">请选择接口分组</span>
                             </div>
@@ -114,26 +118,30 @@
                             <label class="col-sm-2 control-label">请求头部(Headers)</label>
 
                             <div class="col-sm-5">
-                                <table class="table" width="100%%" border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <th scope="col">KEY</th>
-                                        <th scope="col">VALUE</th>
-                                        <th scope="col">
-                                            <button type="button" class="btn btn-primary btn-xs"
-                                                    @click="addKey('headers')">添加
-                                            </button>
-                                        </th>
-                                    </tr>
-                                    <tr class="form-inline" v-for="(header, h_index) in inface.headers">
-                                        <td><input type="text" class="form-control input-sm" v-model="header[0]"></td>
-                                        <td><input type="text" class="form-control input-sm" v-model="header[1]"></td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger btn-xs"
-                                                    @click="delKey('headers', h_index)">删除
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </table>
+                                <div class="col-sm-8">
+                                    <table class="table" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <th width="45%" scope="col">KEY</th>
+                                            <th width="45%" scope="col">VALUE</th>
+                                            <th width="10%" scope="col">
+                                                <button type="button" class="btn btn-primary btn-xs"
+                                                        @click="addKey('headers')">添加
+                                                </button>
+                                            </th>
+                                        </tr>
+                                        <tr class="form-inline" v-for="(header, h_index) in inface.headers">
+                                            <td><input type="text" class="form-control input-sm" v-model="header[0]">
+                                            </td>
+                                            <td><input type="text" class="form-control input-sm" v-model="header[1]">
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-xs"
+                                                        @click="delKey('headers', h_index)">删除
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -143,52 +151,23 @@
                             <div class="col-sm-5">
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#tabFormData"
-                                                                              aria-controls="tabFormData" role="tab"
-                                                                              data-toggle="tab">表单[form-data]</a></li>
-                                    <li role="presentation"><a href="#tabRESTful" aria-controls="tabRESTful" role="tab"
-                                                               data-toggle="tab">RESTful</a></li>
+                                    <li role="presentation" class="active"><a href="#tabRESTful"
+                                                                              aria-controls="tabRESTful" role="tab"
+                                                                              data-toggle="tab">RESTful</a></li>
                                     <li role="presentation"><a href="#tabRaw" aria-controls="tabRaw" role="tab"
                                                                data-toggle="tab">源数据[raw]</a></li>
                                 </ul>
 
                                 <!-- Tab panes -->
                                 <div class="tab-content m-t">
-                                    <div role="tabpanel" class="tab-pane active" id="tabFormData">
+                                    <div role="tabpanel" class="tab-pane active" id="tabRESTful">
                                         <div class="col-sm-8">
-                                            <table class="table" width="100%%" border="0" cellspacing="0"
+                                            <table class="table" width="100%" border="0" cellspacing="0"
                                                    cellpadding="0">
                                                 <tr>
-                                                    <th scope="col">KEY</th>
-                                                    <th scope="col">VALUE</th>
-                                                    <th scope="col">
-                                                        <button type="button" class="btn btn-primary btn-xs"
-                                                                @click="addKey('form_data')">添加
-                                                        </button>
-                                                    </th>
-                                                </tr>
-                                                <tr class="form-inline" v-for="(form, f_index) in inface.form_data">
-                                                    <td><input type="text" class="form-control input-sm"
-                                                               v-model="form[0]"></td>
-                                                    <td><input type="text" class="form-control input-sm"
-                                                               v-model="form[1]"></td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger btn-xs"
-                                                                @click="delKey('form_data', f_index)">删除
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="tabRESTful">
-                                        <div class="col-sm-8">
-                                            <table class="table" width="100%%" border="0" cellspacing="0"
-                                                   cellpadding="0">
-                                                <tr>
-                                                    <th scope="col">KEY</th>
-                                                    <th scope="col">VALUE</th>
-                                                    <th scope="col">
+                                                    <th width="45%" scope="col">KEY</th>
+                                                    <th width="45%" scope="col">VALUE</th>
+                                                    <th width="10%" scope="col">
                                                         <button type="button" class="btn btn-info btn-xs"
                                                                 @click="addKey('restful')">添加
                                                         </button>
@@ -279,15 +258,26 @@
         protocol: 'HTTP',
         title: '',
         headers: [],
-        form_data: [],
         restful: [],
         raw: '',
         return_normal: '',
         return_abnormal: ''
-      }
+      },
+      /**
+       * 控制判断
+       * @key operate 是否编辑(edit)
+       * @key api_id
+       */
+      control: {}
     },
     beforeCreate: function () {
       var app = this
+
+      /* // TODO: 编辑
+      app.control = {
+        operate: getUrlParam('oper'),
+        api_id: getUrlParam('api_id')
+      }*/
 
       /**
        * 获取分组列表
@@ -299,10 +289,15 @@
         .catch(function (error) {
           toastr.error(error)
         })
+
+      /* // TODO: 编辑
+      if (app.control.operate === 'edit') {
+        app.$options.methods.loadOneInterface(app.control.api_id)
+      }*/
     },
     methods: {
       addKey: function (key) {
-        this.inface[key].push([null, null])
+        this.inface[key].push([null, null, {}])
       },
       delKey: function (key, index) {
         this.inface[key].splice(index, 1)
@@ -311,34 +306,41 @@
         var app = this
         this.$validator.validateAll().then(function (result) {
           if (result) {
-            axios.post('http://10.100.99.7:5585/data/savedata', {
-              group_id: app.inface.group_id,
-              uri: app.inface.uri,
-              method: app.inface.method,
-              protocol: app.inface.protocol,
-              title: app.inface.title,
-              headers: app.inface.headers,
-              form_data: app.inface.form_data,
-              restful: app.inface.restful,
-              raw: app.inface.raw,
-              return_normal: app.inface.return_normal,
-              return_abnormal: app.inface.return_abnormal
-            })
-              .then(function (res) {
-                if (res.data) {
-                  toastr.success('添加接口成功')
-                  setTimeout(function () {
-                    window.location = './interface-list'
-                  }, 1000)
-                } else {
-                  toastr.error('添加接口失败')
-                }
+            if (app.control.operate !== 'edit') {
+              axios.post('http://10.100.99.7:5585/data/savedata', {
+                group_id: app.inface.group_id,
+                uri: app.inface.uri,
+                method: app.inface.method,
+                protocol: app.inface.protocol,
+                title: app.inface.title,
+                headers: app.inface.headers,
+                restful: app.inface.restful,
+                raw: app.inface.raw,
+                return_normal: app.inface.return_normal,
+                return_abnormal: app.inface.return_abnormal
               })
-              .catch(function (error) {
-                toastr.error(error)
-              })
+                .then(function (res) {
+                  if (res.data) {
+                    toastr.success('添加接口成功')
+                    setTimeout(function () {
+                      window.location = './interface-list'
+                    }, 1000)
+                  } else {
+                    toastr.error('添加接口失败')
+                  }
+                })
+                .catch(function (error) {
+                  toastr.error(error)
+                })
+            }
+          } else {
+
           }
         })
+      },
+      // TODO: 编辑
+      loadOneInterface: function (api_id) {
+
       }
     }
   })

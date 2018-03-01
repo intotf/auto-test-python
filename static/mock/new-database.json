@@ -1,0 +1,9 @@
+{
+  "title": "配置名",
+  "type": "mysql",
+  "url": "database address",
+  "port": 3306,
+  "name": "tdw_main",
+  "user": "username",
+  "pwd": "password"
+}

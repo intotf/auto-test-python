@@ -51,10 +51,11 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation"><a href="#tabDoc" aria-controls="tabDoc" role="tab"
-                                                   data-toggle="tab">文档</a>
+                                                   data-toggle="tab"><i class="fa fa-file-text"></i> 文档</a>
                         </li>
                         <li role="presentation" class="active"><a href="#tabTest" aria-controls="tabTest" role="tab"
-                                                                  data-toggle="tab">测试</a></li>
+                                                                  data-toggle="tab"><i class="fa fa-rocket"></i> 测试</a>
+                        </li>
                     </ul>
 
                     <!-- Tab panes -->
@@ -81,24 +82,64 @@
                                     <td>www.baidu.com</td>
                                 </tr>
                                 <tr>
+                                    <td><strong>请求头部</strong></td>
+                                    <td>
+                                        <table class="table table-striped table-bordered" width="100%" border="0"
+                                               cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <th width="45%" scope="col">KEY</th>
+                                                <th width="55%" scope="col">VALUE</th>
+                                            </tr>
+                                            <tr v-for="header in inface.headers">
+                                                <td>[[ header[0] ]]</td>
+                                                <td>[[ header[1] ]]</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td><strong>请求参数【表单form-data】</strong></td>
-                                    <td>&nbsp;</td>
+                                    <td>
+                                        <table class="table table-striped table-bordered" width="100%" border="0"
+                                               cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <th width="45%" scope="col">KEY</th>
+                                                <th width="55%" scope="col">VALUE</th>
+                                            </tr>
+                                            <tr v-for="form in inface.form_data">
+                                                <td>[[ form[0] ]]</td>
+                                                <td>[[ form[1] ]]</td>
+                                            </tr>
+                                        </table>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>请求参数【RESTful】</strong></td>
-                                    <td>&nbsp;</td>
+                                    <td>
+                                        <table class="table table-striped table-bordered" width="100%" border="0"
+                                               cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <th width="45%" scope="col">KEY</th>
+                                                <th width="55%" scope="col">VALUE</th>
+                                            </tr>
+                                            <tr v-for="rest in inface.restful">
+                                                <td>[[ rest[0] ]]</td>
+                                                <td>[[ rest[1] ]]</td>
+                                            </tr>
+                                        </table>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>请求参数【源数据raw】</strong></td>
-                                    <td>&nbsp;</td>
+                                    <td>[[ inface.raw ]]</td>
                                 </tr>
                                 <tr>
                                     <td><strong>返回值【正常】</strong></td>
-                                    <td>&nbsp;</td>
+                                    <td>[[ inface.return_normal ]]</td>
                                 </tr>
                                 <tr>
                                     <td><strong>返回值【异常】</strong></td>
-                                    <td>&nbsp;</td>
+                                    <td>[[ inface.return_abnormal ]]</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -188,43 +229,17 @@
                                     <div class="col-sm-9">
                                         <!-- Nav tabs -->
                                         <ul class="nav nav-tabs" role="tablist">
-                                            <li role="presentation" class="active"><a href="#tabFormData"
-                                                                                      aria-controls="tabFormData"
+                                            <li role="presentation" class="active"><a href="#tabRESTful"
+                                                                                      aria-controls="tabRESTful"
                                                                                       role="tab"
-                                                                                      data-toggle="tab">表单[form-data]</a>
-                                            </li>
-                                            <li role="presentation"><a href="#tabRESTful" aria-controls="tabRESTful"
-                                                                       role="tab"
-                                                                       data-toggle="tab">RESTful</a></li>
+                                                                                      data-toggle="tab">RESTful</a></li>
                                             <li role="presentation"><a href="#tabRaw" aria-controls="tabRaw" role="tab"
                                                                        data-toggle="tab">源数据[raw]</a></li>
                                         </ul>
 
                                         <!-- Tab panes -->
                                         <div class="tab-content m-t">
-                                            <div role="tabpanel" class="tab-pane active" id="tabFormData">
-                                                <table class="table" width="100%%" border="0" cellspacing="0"
-                                                       cellpadding="0">
-                                                    <tr>
-                                                        <th width="39%" scope="col">KEY</th>
-                                                        <th width="40%" scope="col">VALUE</th>
-                                                        <th width="21%" scope="col">
-                                                            操作
-                                                        </th>
-                                                    </tr>
-                                                    <tr class="form-inline" v-for="(form, index) in inface.form_data">
-                                                        <td>[[ form[0] ]]</td>
-                                                        <td>[[ form[1] ]]</td>
-                                                        <td>
-                                                            <button type="button" class="btn btn-primary btn-xs"
-                                                                    data-toggle="modal" data-target="#constructor"
-                                                                    @click="syncConstructor(index, form[2])">构造器
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            <div role="tabpanel" class="tab-pane" id="tabRESTful">
+                                            <div role="tabpanel" class="tab-pane active" id="tabRESTful">
 
                                                 <table class="table" width="100%%" border="0" cellspacing="0"
                                                        cellpadding="0">
@@ -241,7 +256,8 @@
                                                         <td>
                                                             <button type="button" class="btn btn-info btn-xs"
                                                                     data-toggle="modal" data-target="#constructor"
-                                                                    @click="syncConstructor(index, rest[2])">构造器
+                                                                    @click="syncConstructor(index, rest[2], rest[0])">
+                                                                构造器
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -257,7 +273,8 @@
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2">
-                                        <button class="btn btn-primary" type="submit">发送测试</button>
+                                        <button class="btn btn-primary" type="submit">发送测试 <i
+                                                class="fa fa-paper-plane"></i></button>
                                     </div>
                                 </div>
                             </form>
@@ -272,19 +289,30 @@
                     <h5>测试结果</h5>
                 </div>
                 <div class="ibox-content">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active">
-                            <a href="#tabResult" aria-controls="tabResult" role="tab"
-                               data-toggle="tab">返回结果</a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#tabResultHeaders" aria-controls="tabResultHeaders" role="tab"
-                               data-toggle="tab">请求头部</a></li>
-                        <li role="presentation">
-                            <a href="#tabResultBody" aria-controls="tabResultBody" role="tab"
-                               data-toggle="tab">请求内容</a></li>
-                    </ul>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#tabResult" aria-controls="tabResult" role="tab"
+                                       data-toggle="tab"><i class="fa fa-terminal"></i> 返回结果</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#tabResultHeaders" aria-controls="tabResultHeaders" role="tab"
+                                       data-toggle="tab"><i class="fa fa-train"></i> 请求头部</a></li>
+                                <li role="presentation">
+                                    <a href="#tabResultBody" aria-controls="tabResultBody" role="tab"
+                                       data-toggle="tab"><i class="fa fa-pencil-square-o"></i> 请求内容</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <br>
+                            <span class="label label-primary">执行状态：</span>
+                            <span class="label label-info">执行时间：</span>
+                            <span class="label label-success">返回类型：</span>
+                        </div>
+                    </div>
+
 
                     <!-- Tab panes -->
                     <div class="tab-content">
@@ -358,7 +386,8 @@
                                 <label class="col-sm-3 control-label">数据库字段</label>
 
                                 <div class="col-sm-9">
-                                    <input class="form-control" type="text" v-model="constr.database_field">
+                                    <input name="constr.database_field" class="form-control" type="text"
+                                           v-model="constr.database_field">
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -382,42 +411,71 @@
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">选择数据库</label>
+                                <label class="col-sm-3 control-label">选择数据库配置</label>
 
                                 <div class="col-sm-9">
                                     <select class="form-control" name="database" id="database"
                                             v-model="constr.database">
-                                        <option v-for="(db, index) in database" :value="db.id">[[ db.ven_name ]]</option>
-                                        <option value="">+ 添加新数据库</option>
+                                        <option v-for="(db, index) in database" :value="db.id">[[ db.ven_name ]]
+                                        </option>
+                                        <option value="">+ 添加新数据库配置</option>
                                     </select>
                                 </div>
                             </div>
                             <div id="fillDatabase" class="hidden">
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
+                                    <label class="col-sm-3 control-label">配置描述</label>
+
+                                    <div class="col-sm-9">
+                                        <input name="new_database.title" class="form-control" type="text"
+                                               v-model="new_database.title" v-validate="'required'">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">数据库类型</label>
+
+                                    <div class="col-sm-9">
+                                        <select class="form-control" v-model="new_database.type">
+                                            <option value="mysql">MySQL</option>
+                                            <option value="mssql">SQL Server</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label">数据库地址</label>
 
-                                    <div class="col-sm-9">
-                                        <input class="form-control" type="text" v-model="new_database.database_url">
+                                    <div class="col-sm-9"
+                                         :class="{ 'col-sm-7': new_database.type === 'mysql' }">
+                                        <input class="form-control" type="text" v-model="new_database.url">
+                                    </div>
+                                    <div class="col-sm-2" v-show="new_database.type === 'mysql'">
+                                        <input class="form-control" placeholder="端口" type="text"
+                                               v-model="new_database.port">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">数据库用户名</label>
+                                    <label class="col-sm-3 control-label">数据库名</label>
 
                                     <div class="col-sm-9">
-                                        <input class="form-control" type="text" v-model="new_database.database_user">
+                                        <input class="form-control" type="text" v-model="new_database.name">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">数据库密码</label>
-
-                                    <div class="col-sm-9">
-                                        <input class="form-control" type="password" v-model="new_database.database_pwd">
+                                    <label class="col-sm-3 control-label">身份</label>
+                                    <div class="col-sm-4">
+                                        <input class="form-control" type="text" v-model="new_database.user"
+                                               placeholder="用户名">
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input class="form-control" type="password" v-model="new_database.pwd"
+                                               placeholder="密码">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-3">
-                                        <button class="btn btn-primary" type="button">添加新数据库</button>
+                                        <button class="btn btn-primary" type="button" @click="addNewDatabase()">添加新数据库
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -442,7 +500,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">保存</button>
+                    <button type="button" class="btn btn-primary" @click="saveConstructor">保存</button>
                 </div>
             </div>
         </div>
@@ -453,6 +511,7 @@
 <script src="../static/js/bootstrap.min.js?v=3.3.6"></script>
 <script src="../static/js/plugins/toastr/toastr.min.js"></script>
 <script src="../static/js/vue.js"></script>
+<script src="../static/js/vee-validate.js"></script>
 <script src="../static/js/axios.min.js"></script>
 <script src="../static/js/main.js?v1"></script>
 <script>
@@ -479,6 +538,8 @@
       })
   })
 
+  Vue.use(VeeValidate)
+
   var app = new Vue({
     el: '#app',
     delimiters: ['[[', ']]'],
@@ -486,7 +547,8 @@
       inface: {},
       database: [],
       new_database: {},
-      constr: {}
+      constr: {},
+      submit_status: {}
     },
     beforeCreate: function () {
       var app = this
@@ -504,36 +566,107 @@
           toastr.error(error)
         })
 
-      axios.get('/static/mock/database.json')
-        .then(function (res) {
-          app.database = res.data.database
-        })
-        .catch(function (error) {
-          toastr.error(error)
-        })
+      app.$options.methods.loadDatabaseConfig()
     },
     methods: {
       /**
        * 同步选择的构造器到constructor临时数据中
        * @param index 点击时的数组index
        * @param obj 构造器的对象
+       * @param key 构造器的key
        */
-      syncConstructor: function (index, obj) {
+      syncConstructor: function (index, obj, key) {
         this.constr = {}
         obj && (this.constr = obj)
         this.$set(this.constr, 'arr_index', index)
+        this.$set(this.constr, 'key', key)
       },
+      /**
+       * 获取数据库配置列表
+       */
+      loadDatabaseConfig: function () {
+        axios.get('http://10.100.99.7:5585/env/get')
+          .then(function (res) {
+            app.database = res.data.database
+          })
+          .catch(function (error) {
+            toastr.error(error)
+          })
+      },
+      /**
+       * 添加新数据库配置
+       */
       addNewDatabase: function () {
-        axios.post('/post', {
-          database_url: new_database.database_url,
-          database_user: new_database.database_user,
-          database_pwd: new_database.database_pwd
+        var app = this
+
+        axios.post('http://10.100.99.7:5585/env/insert', {
+          title: app.new_database.title,
+          type: app.new_database.type,
+          url: app.new_database.url,
+          port: app.new_database.port || '',
+          name: app.new_database.name,
+          user: app.new_database.user,
+          pwd: app.new_database.pwd
         })
           .then(function (res) {
             if (res.data) {
-              toastr.success('添加接口成功')
+              // 默认选择添加的数据库配置
+              app.constr.database = res.data
+              toastr.success('添加数据库成功')
+              app.$options.methods.loadDatabaseConfig()
+              app.new_database = {}
             } else {
-              toastr.error('添加接口失败')
+              toastr.error('添加数据库失败')
+            }
+          })
+          .catch(function (error) {
+            toastr.error(error)
+          })
+      },
+      /**
+       * 保存构造器
+       */
+      saveConstructor: function () {
+        var app = this
+        var obj = {}
+
+        switch (app.constr.assign_type) {
+          case 'upload':
+            obj = {
+              api_id: app.inface.api_id,
+              key: app.constr.key,
+              assign_type: app.constr.assign_type,
+              upload_id: app.constr.upload_id,
+              field: app.constr.field
+            }
+            break
+          case 'database':
+            obj = {
+              api_id: app.inface.api_id,
+              key: app.constr.key,
+              assign_type: app.constr.assign_type,
+              database_field: app.constr.database_field,
+              sql: app.constr.sql,
+              database_type: app.constr.database_type,
+              database: app.constr.database
+            }
+            break
+          case 'normal':
+            obj = {
+              api_id: app.inface.api_id,
+              key: app.constr.key,
+              assign_type: app.constr.assign_type,
+              const_no: app.constr.const_no
+            }
+            break
+        }
+
+        axios.post('http://10.100.99.7:5585/param/insert', JSON.stringify(obj))
+          .then(function (res) {
+            if (res.data) {
+              toastr.success('保存构造器成功')
+            } else {
+              toastr.error('保存构造器失败')
             }
           })
           .catch(function (error) {

@@ -9,7 +9,7 @@
     ["header1", 1],
     ["header2", 2]
   ],
-  "form_data": [
+  "restful": [
     ["form1", 1, {
       "assign_type": "upload",
       "upload_id": 777,
@@ -17,19 +17,15 @@
     }],
     ["form2", 2, {
       "assign_type": "database",
-      "database_field": "数据库字段",
+      "database_field": "",
       "sql": "SQL语句",
       "database_type": "mysql",
-      "database": 3
+      "database": 301144446
     }],
     ["form3", 3, {
       "assign_type": "normal",
       "const_no": "chinese_name"
     }]
-  ],
-  "restful": [
-    ["restful1", 1],
-    ["restful2", 2]
   ],
   "raw": "raw...",
   "return_normal": "return_normal...",
