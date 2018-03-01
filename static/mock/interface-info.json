@@ -1,0 +1,37 @@
+{
+  "api_id": "API-201802280003",
+  "hostname": "10.100.1.100",
+  "uri": "/interface/api",
+  "method": "GET",
+  "protocol": "HTTPS",
+  "title": "接口测试标题",
+  "headers": [
+    ["header1", 1],
+    ["header2", 2]
+  ],
+  "form_data": [
+    ["form1", 1, {
+      "assign_type": "upload",
+      "upload_id": 777,
+      "field": "name1"
+    }],
+    ["form2", 2, {
+      "assign_type": "database",
+      "database_field": "数据库字段",
+      "sql": "SQL语句",
+      "database_type": "mysql",
+      "database": 3
+    }],
+    ["form3", 3, {
+      "assign_type": "normal",
+      "const_no": "chinese_name"
+    }]
+  ],
+  "restful": [
+    ["restful1", 1],
+    ["restful2", 2]
+  ],
+  "raw": "raw...",
+  "return_normal": "return_normal...",
+  "return_abnormal": "return_abnormal..."
+}
