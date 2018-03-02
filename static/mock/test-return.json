@@ -1,0 +1,12 @@
+{
+  "code": 200,
+  "message": "",
+  "data": {
+    "status": 200,
+    "time": 0.01,
+    "resp_type": "json",
+    "response": {},
+    "resp_headers": {},
+    "reqs_content": {}
+  }
+}

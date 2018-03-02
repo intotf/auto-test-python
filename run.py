@@ -46,5 +46,11 @@ def interfaceInfo():
     return render_template('interface-info.html')
 
 
+# 接口信息页
+@app.route('/database-config-list')
+def DatabaseConfigList():
+    return render_template('database-config-list.html')
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5585, debug=True, threaded=True)

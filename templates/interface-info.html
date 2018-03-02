@@ -27,7 +27,7 @@
 <div id="app">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>API接口</h2>
+            <h2>接口信息</h2>
             <ol class="breadcrumb">
                 <li>
                     <a href="/" target="_top">主页</a>
@@ -257,7 +257,7 @@
                                                             <button type="button" class="btn btn-info btn-xs"
                                                                     data-toggle="modal" data-target="#constructor"
                                                                     @click="syncConstructor(index, rest[2], rest[0])">
-                                                                构造器
+                                                                入参
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -265,7 +265,7 @@
                                             </div>
                                             <div role="tabpanel" class="tab-pane" id="tabRaw"><textarea
                                                     class="form-control"
-                                                    rows="3" v-model="inface.raw"></textarea>
+                                                    rows="7" v-model="inface.raw" disabled></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -273,7 +273,7 @@
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2">
-                                        <button class="btn btn-primary" type="submit">发送测试 <i
+                                        <button class="btn btn-primary" type="button" @click="testDebug">发送测试 <i
                                                 class="fa fa-paper-plane"></i></button>
                                     </div>
                                 </div>
@@ -306,23 +306,23 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="tabResult"><textarea
                                 class="form-control"
-                                rows="36"></textarea>
+                                rows="36" v-model="debug_return.response"></textarea>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="tabResultHeaders">
                                             <textarea class="form-control"
-                                                      rows="36"></textarea>
+                                                      rows="36" v-model="debug_return.resp_headers"></textarea>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="tabResultBody"><textarea
                                 class="form-control"
-                                rows="36"></textarea>
+                                rows="36" v-model="debug_return.reqs_content"></textarea>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <br>
-                            <span class="label label-primary">执行状态：</span>
-                            <span class="label label-info">执行时间：</span>
-                            <span class="label label-success">返回类型：</span>
+                            <span class="label label-primary">执行状态：[[ debug_return.status ]]</span>
+                            <span class="label label-info">执行时间：[[ debug_return.time ]]</span>
+                            <span class="label label-success">返回类型：[[ debug_return.resp_type ]]</span>
                         </div>
                     </div>
                 </div>
@@ -330,7 +330,7 @@
         </div>
     </div>
 
-    <!--构造器弹窗-->
+    <!--入参弹窗-->
     <div class="modal" id="constructor" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated fadeIn">
@@ -340,7 +340,7 @@
                             class="sr-only">关闭</span>
                     </button>
 
-                    <h4 class="modal-title"><i class="fa fa-laptop modal-icon"></i> 构造器</h4>
+                    <h4 class="modal-title"><i class="fa fa-laptop modal-icon"></i> 入参</h4>
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal m-t" id="constructorForm">
@@ -521,6 +521,7 @@
       database: [],
       new_database: {},
       constr: {},
+      debug_return: {},
       submit_status: {}
     },
     beforeCreate: function () {
@@ -543,10 +544,10 @@
     },
     methods: {
       /**
-       * 同步选择的构造器到constructor临时数据中
+       * 同步选择的入参到constructor临时数据中
        * @param index 点击时的数组index
-       * @param obj 构造器的对象
-       * @param key 构造器的key
+       * @param obj 入参的对象
+       * @param key 入参的key
        */
       syncConstructor: function (index, obj, key) {
         this.constr = {}
@@ -597,7 +598,7 @@
           })
       },
       /**
-       * 保存构造器
+       * 保存入参
        */
       saveConstructor: function () {
         var app = this
@@ -640,13 +641,34 @@
             break
         }
 
-        axios.post('http://10.100.99.7:5585/param/insert', JSON.stringify(obj))
+        axios.post('http://10.100.99.7:5585/param/insert', obj)
           .then(function (res) {
             if (res.data) {
-              toastr.success('保存构造器成功')
+              toastr.success('保存入参成功')
             } else {
-              toastr.error('保存构造器失败')
+              toastr.error('保存入参失败')
             }
+          })
+          .catch(function (error) {
+            toastr.error(error)
+          })
+      },
+      testDebug: function () {
+        var app = this
+
+        axios.post('http://10.100.99.7:5585/debug', {
+          api_id: getUrlParam('id'),
+          url: app.inface.hostname
+        })
+          .then(function (res) {
+            if (res.data.code === 200) {
+
+            } else {
+              toastr.error(res.data.message)
+
+            }
+            console.log(res.data)
+            app.debug_return = res.data.data
           })
           .catch(function (error) {
             toastr.error(error)

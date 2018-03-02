@@ -27,7 +27,7 @@
 <div id="app">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>API接口</h2>
+            <h2>添加API接口</h2>
             <ol class="breadcrumb">
                 <li>
                     <a href="/" target="_top">主页</a>
@@ -304,6 +304,17 @@
       },
       validateBeforeSubmit: function () {
         var app = this
+
+        function saveJSON (val) {
+          try {
+            JSON.parse(val)
+          } catch (err) {
+            return {}
+          }
+
+          return JSON.parse(val)
+        }
+
         this.$validator.validateAll().then(function (result) {
           if (result) {
             if (app.control.operate !== 'edit') {
@@ -315,7 +326,7 @@
                 title: app.inface.title,
                 headers: app.inface.headers,
                 restful: app.inface.restful,
-                raw: app.inface.raw,
+                raw: saveJSON(app.inface.raw),
                 return_normal: app.inface.return_normal,
                 return_abnormal: app.inface.return_abnormal
               })
