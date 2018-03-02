@@ -33,7 +33,7 @@
                     <a href="/" target="_top">主页</a>
                 </li>
                 <li>
-                    <a href="interface-list">API接口</a>
+                    <a href="interface-list">接口列表</a>
                 </li>
                 <li>
                     <strong>添加接口</strong>
@@ -153,9 +153,9 @@
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li role="presentation" class="active"><a href="#tabRESTful"
                                                                               aria-controls="tabRESTful" role="tab"
-                                                                              data-toggle="tab">RESTful</a></li>
+                                                                              data-toggle="tab">参数</a></li>
                                     <li role="presentation"><a href="#tabRaw" aria-controls="tabRaw" role="tab"
-                                                               data-toggle="tab">源数据[raw]</a></li>
+                                                               data-toggle="tab">文本</a></li>
                                 </ul>
 
                                 <!-- Tab panes -->
@@ -323,7 +323,7 @@
                   if (res.data) {
                     toastr.success('添加接口成功')
                     setTimeout(function () {
-                      window.location = './interface-list'
+                      // window.location = './interface-list'
                     }, 1000)
                   } else {
                     toastr.error('添加接口失败')
