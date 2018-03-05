@@ -18,7 +18,7 @@
     <link href="../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
     <link href="../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
     <link href="../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
-    <link href="../static/js/plugins/select2/css/select2.css" rel="stylesheet"/>
+    <link href="../static/css/plugins/json-viewer/jquery.json-viewer.css" rel="stylesheet">
     <link href="../static/css/animate.min.css" rel="stylesheet">
     <link href="../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
 </head>
@@ -47,10 +47,16 @@
                 <div class="ibox-title">
                     <h5>接口信息</h5>
                     <div class="ibox-tools">
-                                <a href="interface-list" class="btn btn-primary btn-xs"><i class="fa fa-chevron-left"></i> 返回列表</a>
-                            </div>
+                        <a href="interface-list" class="btn btn-primary btn-xs"><i class="fa fa-chevron-left"></i> 返回列表</a>
+                    </div>
                 </div>
                 <div class="ibox-content">
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-primary btn-sm" type="button" @click="testDebug"><i
+                                                class="fa fa-paper-plane"></i> 发送测试
+                                        </button>
+
+                    </div>
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation"><a href="#tabDoc" aria-controls="tabDoc" role="tab"
@@ -266,9 +272,8 @@
                                                     </tr>
                                                 </table>
                                             </div>
-                                            <div role="tabpanel" class="tab-pane" id="tabRaw"><textarea
-                                                    class="form-control"
-                                                    rows="7" v-model="inface.raw" disabled></textarea>
+                                            <div role="tabpanel" class="tab-pane" id="tabRaw">
+                                                <pre id="tabRawPre"></pre>
                                             </div>
                                         </div>
                                     </div>
@@ -276,7 +281,9 @@
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2">
-                                        <button class="btn btn-primary" type="button" @click="testDebug"><i class="fa fa-paper-plane"></i> 发送测试 </button>
+                                        <button class="btn btn-primary" type="button" @click="testDebug"><i
+                                                class="fa fa-paper-plane"></i> 发送测试
+                                        </button>
                                         <a href="interface-list" class="btn btn-white"><i class="fa fa-reply"></i> 返回列表</a>
                                     </div>
                                 </div>
@@ -307,17 +314,14 @@
                     </ul>
                     <!-- Tab panes -->
                     <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="tabResult"><textarea
-                                class="form-control"
-                                rows="36" v-model="debug_return.response"></textarea>
+                        <div role="tabpanel" class="tab-pane active" id="tabResult">
+                            <pre id="debug_response"></pre>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="tabResultHeaders">
-                                            <textarea class="form-control"
-                                                      rows="36" v-model="debug_return.resp_headers"></textarea>
+                            <pre id="debug_resp_headers"></pre>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="tabResultBody"><textarea
-                                class="form-control"
-                                rows="36" v-model="debug_return.reqs_content"></textarea>
+                        <div role="tabpanel" class="tab-pane" id="tabResultBody">
+                            <pre id="debug_reqs_content"></pre>
                         </div>
                     </div>
                     <div class="row">
@@ -485,12 +489,12 @@
 
                                 <div class="col-sm-9">
                                     <select class="form-control" v-model="constr.const_no">
-                                        <option value="mobile">随机手机号</option>
-                                        <option value="id_card">身份证号</option>
-                                        <option value="uu_id">UUID</option>
-                                        <option value="bank_card">工行卡号</option>
-                                        <option value="int">int类型数字</option>
-                                        <option value="chinese_name">中文名字</option>
+                                        <option value="1">随机手机号</option>
+                                        <option value="2">身份证号</option>
+                                        <option value="3">UUID</option>
+                                        <option value="4">工行卡号</option>
+                                        <option value="5">int类型数字</option>
+                                        <option value="6">中文名字</option>
                                     </select>
                                 </div>
                             </div>
@@ -512,6 +516,7 @@
 <script src="../static/js/vue.js"></script>
 <script src="../static/js/vee-validate.js"></script>
 <script src="../static/js/axios.min.js"></script>
+<script src="../static/js/plugins/json-viewer/jquery.json-viewer.js"></script>
 <script src="../static/js/main.js?v1"></script>
 <script>
   Vue.use(VeeValidate)
@@ -542,8 +547,23 @@
         .catch(function (error) {
           toastr.error(error)
         })
+        .then(function () {
+          app.$options.methods.displayJsonViewer('#tabRawPre', app.inface.raw)
+        })
 
       app.$options.methods.loadDatabaseConfig()
+
+    },
+    watch: {
+      'debug_return.response': function () {
+        this.$options.methods.displayJsonViewer('#debug_response', this.debug_return.response)
+      },
+      'debug_return.resp_headers': function () {
+        this.$options.methods.displayJsonViewer('#debug_resp_headers', this.debug_return.resp_headers)
+      },
+      'debug_return.reqs_content': function () {
+        this.$options.methods.displayJsonViewer('#debug_reqs_content', this.debug_return.reqs_content)
+      }
     },
     methods: {
       /**
@@ -676,6 +696,22 @@
           .catch(function (error) {
             toastr.error(error)
           })
+      },
+      /**
+       * 用JsonViewer显示Json值
+       * @param el 选择器字符串
+       * @param val 值
+       */
+      displayJsonViewer: function (el, val) {
+        var $el = $(el)
+
+        $el.text(val)
+
+        try {
+          JSON.parse(val)
+          $el.jsonViewer(JSON.parse(val))
+        } catch (err) {
+        }
       }
     }
   })
