@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <title>自动化测试+ - 接口信息</title>
+
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="../static/img/favicon.ico">
+    <link href="../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="../static/css/animate.min.css" rel="stylesheet">
+    <link href="../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <style>
+        .ui-sortable{
+            min-height:500px;
+            border:2px dashed #EEE;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+<div id="app">
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>添加任务</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="/" target="_top">主页</a>
+                </li>
+                <li>
+                    <a href="task-list">任务列表</a>
+                </li>
+                <li>
+                    <strong>添加任务</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="col-lg-6">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>任务配置清单</h5>
+                    <div class="ibox-tools">
+                        <a href="task-list" class="btn btn-primary btn-xs"><i class="fa fa-chevron-left"></i> 返回列表</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <draggable v-model="task_flow" class="todo-list m-t ui-sortable" :element="'ul'"
+                               :options="{group: 'task'}">
+                        <li v-for="(task, index) in task_flow">
+                            <span class="m-l-xs">[[task.title]]</span>
+                        </li>
+                    </draggable>
+                    <div class="row p-m">
+                        <div class="col-sm-12 text-center">
+                            <button class="btn btn-primary" type="submit">保存内容</button>
+                            <button class="btn btn-white" type="submit">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>接口列表</h5>
+                </div>
+                <div class="ibox-content">
+                    <draggable v-model="interfaces" class="todo-list m-t ui-sortable" :element="'ul'"
+                               :options="{group: 'task'}">
+                        <li v-for="(inface, index) in interfaces">
+                            <div class="pull-right">
+                                <button class="btn btn-info btn-xs" type="button">入参</button>
+                            </div>
+                            <span class="m-l-xs">[[inface.title]]</span>
+                        </li>
+
+                    </draggable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/js/jquery.min.js?v=2.1.4"></script>
+<script src="../static/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="../static/js/plugins/toastr/toastr.min.js"></script>
+<script src="../static/js/vue.js"></script>
+<script src="../static/js/axios.min.js"></script>
+<script src="../static/js/Sortable.min.js"></script>
+<script src="../static/js/vuedraggable.min.js"></script>
+<script src="../static/js/main.js?v1"></script>
+<script>
+
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    data: {
+      task_flow: [],
+      interfaces: [],
+      pages_control: {}
+    },
+    beforeCreate: function () {
+      this.$options.methods.getInterfaces()
+    },
+    methods: {
+      getInterfaces: function (group_id, page) {
+        var obj = {}
+        group_id ? obj.group_id = group_id : obj.group_id = 0
+        page ? obj.page = page : obj.page = 1
+
+        /**
+         * 获取接口列表
+         */
+        axios.get('/static/mock/interface-list.json', JSON.stringify(obj))
+          .then(function (res) {
+            app.interfaces = res.data.tb_data
+            app.pages_control = {
+              group_id: res.data.group_id,
+              pages: res.data.pages,
+              page: res.data.page
+            }
+          })
+          .catch(function (error) {
+            toastr.error(error)
+          })
+      }
+    }
+  })
+
+</script>
+</body>
+</html>

@@ -46,10 +46,28 @@ def interfaceInfo():
     return render_template('interface-info.html')
 
 
-# 接口信息页
+# 数据库配置列表页
 @app.route('/database-config-list')
-def DatabaseConfigList():
+def databaseConfigList():
     return render_template('database-config-list.html')
+
+
+# 主机配置列表页
+@app.route('/host-config-list')
+def hostConfigList():
+    return render_template('host-config-list.html')
+
+
+# 添加任务页
+@app.route('/task-add')
+def taskAdd():
+    return render_template('task-add.html')
+
+
+# 任务列表页
+@app.route('/task-list')
+def taskList():
+    return render_template('task-list.html')
 
 
 if __name__ == '__main__':
