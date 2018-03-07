@@ -35,6 +35,136 @@
 3. 测试结果页返回JSON字符串加了JsonViewer插件格式化。
 4. 接口信息页增加了一个发送按钮，方便操作。
 
+#### 2018.03.06
+1. 用Vue插件实现拖动创建任务流。
+
+#### 2018.03.07
+1. 大概搭上添加任务的框架，定好任务管理的基本字段和基本流程。
+
+
+## API
+### 任务管理
+#### 任务创建
+发送值
+```json
+{
+  "title": "任务描述"
+}
+```
+返回值
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "task_id": "taskid",
+    "title": "任务描述"
+  }
+}
+```
+
+#### 任务编辑
+发送值
+```json
+{
+  "task_id": "task_id"
+}
+```
+返回值
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "task_id": "taskid",
+    "title": "任务描述",
+    "task_flow": [
+      {
+        "api_id": "API-201802280003",
+        "title": "接口测试标题",
+        "restful": [
+          ["key", "value", {
+              "assign_type": "upload",
+              "upload_id": 777,
+              "field": "name1"
+            }
+          ],
+          ["key", "value", {
+              "assign_type": "database",
+              "database_field": "",
+              "sql": "SQL语句",
+              "database_type": "mysql",
+              "database": 301144446
+            }
+          ],
+          ["key", "value", {
+              "assign_type": "normal",
+              "const_no": "chinese_name"
+            }
+          ]
+        ]
+      }
+    ]
+  }
+}
+```
+
+#### 入参保存
+发送值
+```json
+{
+  "task_id": "task_id"
+}
+```
+
+返回值
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "api_id": "API-201802280003",
+    "restful": [
+      ["key", "value", {
+          "assign_type": "upload",
+          "upload_id": 777,
+          "field": "name1"
+        }
+      ],
+      ["key", "value", {
+          "assign_type": "database",
+          "database_field": "",
+          "sql": "SQL语句",
+          "database_type": "mysql",
+          "database": 301144446
+        }
+      ],
+      ["key", "value", {
+          "assign_type": "normal",
+          "const_no": "chinese_name"
+        }
+      ]
+    ]
+  }
+}
+```
+
+#### 任务删除
+发送值
+```json
+{
+  "task_id": "task_id"
+}
+```
+
+返回值
+```json
+{
+  "code": 200,
+  "msg": "success"
+}
+```
+
 ## 存在问题
 - [ ] 分页没有限定显示页数
 - [ ] 删除没有提示

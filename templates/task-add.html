@@ -56,18 +56,34 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <draggable v-model="task_flow" class="todo-list m-t ui-sortable" :element="'ul'"
-                               :options="{group: 'task'}">
-                        <li v-for="(task, index) in task_flow">
-                            <span class="m-l-xs">[[task.title]]</span>
-                        </li>
-                    </draggable>
-                    <div class="row p-m">
-                        <div class="col-sm-12 text-center">
-                            <button class="btn btn-primary" type="submit">保存内容</button>
-                            <button class="btn btn-white" type="submit">取消</button>
+                    <form class="form-horizontal m-t" id="addTask" @submit.prevent="validateBeforeSubmit">
+                        <div class="form-group" :class="{ 'has-error': errors.has('title') }">
+                            <div class="col-sm-12">
+                                <input id="title" name="title" type="text" class="form-control" placeholder="任务描述"
+                                       v-model="task.title"
+                                       v-validate="'required'">
+                                <span v-show="errors.has('title')" class="help-block m-b-none">请输入任务描述</span>
+                            </div>
                         </div>
-                    </div>
+                        <div class="hr-line-dashed"></div>
+                        <draggable v-model="task.task_flow" class="todo-list m-t ui-sortable" :element="'ul'"
+                                   :options="{group: 'task'}">
+                            <li v-for="(item, index) in task.task_flow">
+                                <div class="pull-right">
+                                    <button class="btn btn-info btn-xs" type="button" data-toggle="modal"
+                                            data-target="#constructor" @click="taskInterfaceModal(index)">入参配置
+                                    </button>
+                                </div>
+                                <span class="m-l-xs">[[item.title]]</span>
+                            </li>
+                        </draggable>
+                        <div class="row p-m">
+                            <div class="col-sm-12 text-center">
+                                <button class="btn btn-primary" type="submit">保存内容</button>
+                                <button class="btn btn-white" type="submit">取消</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -80,13 +96,219 @@
                     <draggable v-model="interfaces" class="todo-list m-t ui-sortable" :element="'ul'"
                                :options="{group: 'task'}">
                         <li v-for="(inface, index) in interfaces">
-                            <div class="pull-right">
-                                <button class="btn btn-info btn-xs" type="button">入参</button>
-                            </div>
                             <span class="m-l-xs">[[inface.title]]</span>
                         </li>
 
                     </draggable>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--入参配置弹窗-->
+    <div class="modal" id="constructor" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content animated fadeIn">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span
+                            class="sr-only">关闭</span>
+                    </button>
+
+                    <h4 class="modal-title"><i class="fa fa-laptop modal-icon"></i> 入参配置</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12" :class="{ 'col-sm-7': control.constructor_open }">
+                            <table class="table" width="100%" border="0" cellspacing="0"
+                                   cellpadding="0">
+                                <thead>
+                                <tr>
+                                    <th width="39%" scope="col">KEY</th>
+                                    <th width="40%" scope="col">VALUE</th>
+                                    <th width="21%" scope="col">
+                                        操作
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody v-if="task_index !== null">
+                                <tr class="form-inline" v-for="(rest, index) in task.task_flow[task_index].restful">
+                                    <td>[[ rest[0] ]]</td>
+                                    <td>[[ rest[1] ]]</td>
+                                    <td>
+                                        <button type="button" class="btn btn-info btn-xs"
+                                                @click="syncConstructor(index, rest[2])">
+                                            入参
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-sm-5 animated fadeInLeft" v-show="control.constructor_open">
+                            <form class="form-horizontal m-t" id="constructorForm">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">赋值方法</label>
+
+                                    <div class="col-sm-8">
+
+                                        <select class="form-control" name="assign" id="assign"
+                                                v-model="constr.assign_type">
+                                            <option value="" aria-controls="">== 请选择 ==</option>
+                                            <option value="upload" aria-controls="assignUpload">上行数据</option>
+                                            <option value="database" aria-controls="assignDatabase">数据库数据</option>
+                                            <option value="normal" aria-controls="assignNormal">常用数据</option>
+                                        </select>
+                                        <input type="hidden" v-model="constr.arr_index">
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div id="assignUpload" class="tab-assign"
+                                     :class="{ hidden: constr.assign_type !== 'upload'}">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">上行执行ID</label>
+
+                                        <div class="col-sm-8">
+                                            <input placeholder="上行执行ID" class="form-control" type="text" v-model="constr.upload_id">
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">要赋值字段</label>
+
+                                        <div class="col-sm-8">
+                                            <input placeholder="要赋值字段" class="form-control" type="text" v-model="constr.field">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="assignDatabase" class="tab-assign"
+                                     :class="{ hidden: constr.assign_type !== 'database'}">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">数据库字段</label>
+
+                                        <div class="col-sm-8">
+                                            <input placeholder="数据库字段" name="constr.database_field" class="form-control" type="text"
+                                                   v-model="constr.database_field">
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">SQL语句</label>
+
+                                        <div class="col-sm-8">
+                                            <input placeholder="SQL语句" class="form-control" type="text" v-model="constr.sql">
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">数据库类型</label>
+
+                                        <div class="col-sm-8">
+                                            <select class="form-control" name="" v-model="constr.database_type">
+                                                <option value="mysql">MySQL</option>
+                                                <option value="mssql">SQL Server</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">选择数据库配置</label>
+
+                                        <div class="col-sm-8">
+                                            <select class="form-control" name="database" id="database"
+                                                    v-model="constr.database">
+                                                <option v-for="(db, index) in database" :value="db.id">[[ db.ven_name ]]
+                                                </option>
+                                                <option value="">+ 添加新数据库配置</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div id="fillDatabase" :class="{ hidden: constr.database !== '' }">
+                                        <div class="hr-line-dashed"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">配置描述</label>
+
+                                            <div class="col-sm-8">
+                                                <input placeholder="配置描述" name="new_database.title" class="form-control" type="text"
+                                                       v-model="new_database.title" v-validate="'required'">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">数据库类型</label>
+
+                                            <div class="col-sm-8">
+                                                <select class="form-control" v-model="new_database.type">
+                                                    <option value="mysql">MySQL</option>
+                                                    <option value="mssql">SQL Server</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">数据库地址</label>
+
+                                            <div class="col-sm-8">
+                                                <input placeholder="数据库地址" class="form-control" type="text" v-model="new_database.url">
+                                            </div>
+                                        </div>
+                                        <div class="form-group" v-show="new_database.type === 'mysql'">
+                                            <label class="col-sm-4 control-label">端口</label>
+
+                                            <div class="col-sm-8">
+                                                <input class="form-control" placeholder="端口" type="text"
+                                                       v-model="new_database.port">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">数据库名</label>
+
+                                            <div class="col-sm-8">
+                                                <input placeholder="数据库名" class="form-control" type="text" v-model="new_database.name">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">身份</label>
+                                            <div class="col-sm-4">
+                                                <input class="form-control" type="text" v-model="new_database.user"
+                                                       placeholder="用户名">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input class="form-control" type="password" v-model="new_database.pwd"
+                                                       placeholder="密码">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-4 col-sm-offset-4">
+                                                <button class="btn btn-primary" type="button" @click="addNewDatabase()">
+                                                    添加新数据库
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="assignNormal" class="tab-assign"
+                                     :class="{ hidden: constr.assign_type !== 'normal'}">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">常量编号</label>
+
+                                        <div class="col-sm-8">
+                                            <select class="form-control" v-model="constr.const_no">
+                                                <option value="1">随机手机号</option>
+                                                <option value="2">身份证号</option>
+                                                <option value="3">UUID</option>
+                                                <option value="4">工行卡号</option>
+                                                <option value="5">int类型数字</option>
+                                                <option value="6">中文名字</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
                 </div>
             </div>
         </div>
@@ -97,18 +319,32 @@
 <script src="../static/js/bootstrap.min.js?v=3.3.6"></script>
 <script src="../static/js/plugins/toastr/toastr.min.js"></script>
 <script src="../static/js/vue.js"></script>
+<script src="../static/js/vee-validate.js"></script>
 <script src="../static/js/axios.min.js"></script>
 <script src="../static/js/Sortable.min.js"></script>
 <script src="../static/js/vuedraggable.min.js"></script>
 <script src="../static/js/main.js?v1"></script>
 <script>
+  Vue.use(VeeValidate)
 
   var app = new Vue({
     el: '#app',
     delimiters: ['[[', ']]'],
     data: {
-      task_flow: [],
+      task: {
+        title: '',
+        task_flow: []
+      },
+      task_index: null,
       interfaces: [],
+      database: [],
+      new_database: {},
+
+      // 入参配置临时变量
+      constr: {},
+      control: {
+        constructor_open: false
+      },
       pages_control: {}
     },
     beforeCreate: function () {
@@ -123,7 +359,7 @@
         /**
          * 获取接口列表
          */
-        axios.get('/static/mock/interface-list.json', JSON.stringify(obj))
+        axios.get('/static/mock/task-interface-list.json', JSON.stringify(obj))
           .then(function (res) {
             app.interfaces = res.data.tb_data
             app.pages_control = {
@@ -135,6 +371,47 @@
           .catch(function (error) {
             toastr.error(error)
           })
+      },
+      /**
+       * 打开入参配置弹窗
+       * 把要配置入参的接口index存入task_index，以便Modal按需显示
+       * @param index
+       */
+      taskInterfaceModal: function (index) {
+        this.task_index = index
+        this.control.constructor_open = false
+      },
+      /**
+       * 同步选择的入参到constructor临时数据中
+       * @param index 点击时的数组index
+       * @param obj 入参的对象
+       */
+      syncConstructor: function (index, obj) {
+        var app = this
+        app.control.constructor_open = true
+        app.constr = {}
+        obj && (app.constr = obj)
+      },
+      validateBeforeSubmit: function () {
+        var app = this
+
+        function saveJSON (val) {
+          try {
+            JSON.parse(val)
+          } catch (err) {
+            return {}
+          }
+
+          return JSON.parse(val)
+        }
+
+        this.$validator.validateAll().then(function (result) {
+          if (result) {
+            alert(result)
+          } else {
+
+          }
+        })
       }
     }
   })
