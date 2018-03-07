@@ -149,6 +149,51 @@
 }
 ```
 
+#### 任务保存
+发送值
+```json
+{
+  "task_id": "taskid",
+  "title": "任务描述",
+  "task_flow": [
+    {
+      "api_id": "API-201802280003",
+      "title": "接口测试标题",
+      "restful": [
+        ["key", "value", {
+            "assign_type": "upload",
+            "upload_id": 777,
+            "field": "name1"
+          }
+        ],
+        ["key", "value", {
+            "assign_type": "database",
+            "database_field": "",
+            "sql": "SQL语句",
+            "database_type": "mysql",
+            "database": 301144446
+          }
+        ],
+        ["key", "value", {
+            "assign_type": "normal",
+            "const_no": "chinese_name"
+          }
+        ]
+      ]
+    }
+  ]
+}
+```
+
+返回值
+```json
+{
+  "code": 200,
+  "msg": "success"
+}
+```
+
+
 #### 任务删除
 发送值
 ```json
