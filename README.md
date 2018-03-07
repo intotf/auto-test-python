@@ -113,11 +113,34 @@
 发送值
 ```json
 {
-  "task_id": "task_id"
+  "task_id": "task_id",
+  "api_id": "API-201802280003",
+  "restful": [
+    ["key", "value", {
+        "assign_type": "upload",
+        "upload_id": 777,
+        "field": "name1"
+      }
+    ],
+    ["key", "value", {
+        "assign_type": "database",
+        "database_field": "",
+        "sql": "SQL语句",
+        "database_type": "mysql",
+        "database": 301144446
+      }
+    ],
+    ["key", "value", {
+        "assign_type": "normal",
+        "const_no": "chinese_name"
+      }
+    ]
+  ]
 }
 ```
 
 返回值
+> 如果麻烦，可以不返回data字段
 ```json
 {
   "code": 200,
