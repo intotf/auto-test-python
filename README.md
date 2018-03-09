@@ -130,6 +130,9 @@
               "assign_type": "upload",
               "upload_id": 777,
               "field": "name1"
+            },{
+              "judge_type": "complete",
+              "result": "返回结果"
             }
           ],
           ["key", "value", {
@@ -138,11 +141,33 @@
               "sql": "SQL语句",
               "database_type": "mysql",
               "database": 301144446
+            },{
+              "judge_type": "expect_match",
+              "match_field": "匹配字段",
+              "result": "返回结果"
             }
           ],
           ["key", "value", {
               "assign_type": "normal",
               "const_no": "chinese_name"
+            },{
+              "judge_type": "database_match",
+              "database_field": "数据库字段",
+              "sql": "SQL语句",
+              "database_type": "数据库类型",
+              "database": "数据库配置",
+              "return_key": "返回结果KEY",
+              "result": "返回结果"
+            }
+          ],
+          ["key", "value", {
+              "assign_type": "normal",
+              "const_no": "chinese_name"
+            },{
+              "judge_type": "execute_match",
+              "execute_before":  [ "key", "value" ],
+              "execute_after":  [ "key", "value" ],
+              "result": "返回结果"
             }
           ]
         ]
@@ -253,6 +278,25 @@
   "msg": "success"
 }
 ```
+
+#### 接口用例返回值设定
+
+| 名称 | 使用字段 |
+| ----- | ----- |
+| 返回结果 | result |
+| 判断类型 | judge_type |
+|  | 完全匹配 'complete' |
+|  | 预期结果与返回结果匹配 'expect_match' |
+|  | 与数据库字段匹配 'database_match' |
+|  | 执行前后数据比对 'execute_match' |
+| 匹配字段 | match_field |
+| 数据库字段 | database_field |
+| SQL语句 | sql |
+| 数据库类型 | database_type |
+| 数据库配置 | database |
+| 返回结果KEY | return_key |
+| 执行前数据 | execute_before: [ key, value ] |
+| 执行后预期结果 | execute_after: [ key, value ] |
 
 ## 存在问题
 - [ ] 分页没有限定显示页数

@@ -17,6 +17,7 @@
     <link rel="shortcut icon" href="../static/img/favicon.ico">
     <link href="../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
     <link href="../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../static/css/plugins/json-viewer/jquery.json-viewer.css" rel="stylesheet">
     <link href="../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
     <link href="../static/css/animate.min.css" rel="stylesheet">
     <link href="../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
@@ -146,6 +147,10 @@
                                 </tr>
                                 </tbody>
                             </table>
+                            <div v-if="task_index !== null">
+                                <pre id="raw">[[ task.task_flow[task_index].raw ]]</pre>
+                            </div>
+
                         </div>
                         <div class="col-sm-5 animated fadeInLeft" v-show="control.constructor_open">
                             <form class="form-horizontal m-t" id="constructorForm">
@@ -331,6 +336,7 @@
 <script src="../static/js/vue.js"></script>
 <script src="../static/js/vee-validate.js"></script>
 <script src="../static/js/axios.min.js"></script>
+<script src="../static/js/plugins/json-viewer/jquery.json-viewer.js"></script>
 <script src="../static/js/Sortable.min.js"></script>
 <script src="../static/js/vuedraggable.min.js"></script>
 <script src="../static/js/main.js?v1"></script>
@@ -349,6 +355,8 @@
 
       // 入参配置临时变量
       constr: {},
+      // 返回值配置临时变量
+      case_return: {},
       control: {
         // 是否打开入参配置表单
         constructor_open: false
@@ -410,6 +418,7 @@
         var app = this
         app.task_index = index
         app.control.constructor_open = false
+        app.$options.methods.displayJsonViewer('#raw', app.task.task_flow[index].raw)
 
         // 如果此任务流中的接口没有参数(restful)，则从服务端获取
         if (!app.task.task_flow[index].restful) {
@@ -422,6 +431,8 @@
             .then(function (res) {
               if (res.data.code === 200) {
                 app.$set(app.task.task_flow[index], 'restful', res.data.data.restful)
+
+                app.$options.methods.displayJsonViewer('#raw', res.data.data.raw)
               } else {
                 toastr.error(res.data.message)
               }
@@ -499,6 +510,22 @@
           .catch(function (error) {
             toastr.error(error)
           })
+      },
+      /**
+       * 用JsonViewer显示Json值
+       * @param el 选择器字符串
+       * @param val 值
+       */
+      displayJsonViewer: function (el, val) {
+        var $el = $(el)
+
+        $el.text(val)
+
+        try {
+          JSON.parse(val)
+          $el.jsonViewer(JSON.parse(val))
+        } catch (err) {
+        }
       },
       validateBeforeSubmit: function () {
         var app = this
