@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <title>自动化测试+ - 任务列表</title>
+
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="../static/img/favicon.ico">
+    <link href="../static/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="../static/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="../static/css/animate.min.css" rel="stylesheet">
+    <link href="../static/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+<div id="app">
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+            <h2>任务列表</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="/" target="_top">主页</a>
+                </li>
+                <li>
+                    <strong>任务列表</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <input type="hidden" v-model="pages_control.page">
+        <input type="hidden" v-model="pages_control.pages">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>任务列表</h5>
+                    <div class="ibox-tools">
+                        <a href="javascript:" data-toggle="modal" data-target="#addTask" class="btn btn-primary btn-xs"><i class="fa fa-plus-circle"></i>
+                            添加任务</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table width="100%" class="table table-striped table-hover">
+                        <thead>
+                        <tr class="text-center">
+
+                            <th width="4%"></th>
+                            <th width="13%">ID</th>
+                            <th width="74%">任务名称</th>
+                            <th width="9%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(task, index) in tasks">
+                            <td>&nbsp;</td>
+                            <td><a :href="'./task-edit?id=' + task.task_id">[[task.task_id]]</a></td>
+                            <td><a :href="'./task-edit?id=' + task.task_id">[[task.title]]</a></td>
+                            <td class="table-action"><a href="javascript:" data-toggle="popover"
+                                                                     data-placement="top"
+                                                                     @click="deleteTask(task.task_id, index)"><i
+                                    class="fa fa-trash-o"></i></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--新建任务弹窗-->
+    <div class="modal" id="addTask" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated fadeIn">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span
+                            class="sr-only">关闭</span>
+                    </button>
+
+                    <h4 class="modal-title"><i class="fa fa-laptop modal-icon"></i> 分组</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t" id="groupForm">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">任务描述</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" placeholder="任务描述" v-model="new_task_title">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" @click="addTask">新建任务</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/js/jquery.min.js?v=2.1.4"></script>
+<script src="../static/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="../static/js/plugins/pace/pace.min.js"></script>
+<script src="../static/js/plugins/toastr/toastr.min.js"></script>
+<script src="../static/js/vue.js"></script>
+<script src="../static/js/axios.min.js"></script>
+<script src="../static/js/main.js?v1"></script>
+<script>
+
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    data: {
+      new_task_title: '',
+      tasks: [],
+      pages_control: {}
+    },
+    beforeCreate: function () {
+      this.$options.methods.getTasks()
+    },
+    methods: {
+      addTask: function () {
+        var app = this
+        axios.post(GLOBAL.IP + '/task/createtask', {
+          title: this.new_task_title
+        })
+          .then(function (res) {
+            if (res.data) {
+              app.tasks.push({task_id: res.data.data.task_id, title: res.data.data.title})
+              toastr.success('新建任务成功')
+            } else {
+              toastr.error('新建任务失败')
+            }
+          })
+          .catch(function (error) {
+            toastr.error(error)
+          })
+          .then(function () {
+            app.new_task_title = null
+            $('[data-dismiss="modal"]').trigger('click')
+          })
+      },
+      deleteTask: function (task_id, index) {
+        var app = this
+        axios.post(GLOBAL.IP + '/task/deltask', {
+          task_id: task_id
+        })
+          .then(function (res) {
+            if (res.data) {
+              app.tasks.splice(index, 1)
+              toastr.success('删除任务成功')
+            } else {
+              toastr.error('删除任务失败')
+            }
+          })
+          .catch(function (error) {
+            toastr.error(error)
+          })
+      },
+      getTasks: function () {
+        /**
+         * 获取任务列表
+         */
+        axios.post(GLOBAL.IP + '/task/tasklist')
+          .then(function (res) {
+            app.tasks = res.data.data
+          })
+          .catch(function (error) {
+            toastr.error(error)
+          })
+      }
+    }
+  })
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "code": 200,
+  "msg": "success",
+  "data": [{
+    "task_id": "taskid",
+    "title": "任务描述",
+    "caselists": [{
+      "case_id": "api_id",
+      "case_title": "案例描述"
+    },{
+      "case_id": "api_id",
+      "case_title": "案例描述"
+    }]
+  },{
+    "task_id": "taskid",
+    "title": "任务描述",
+    "caselists": [{
+      "case_id": "api_id",
+      "case_title": "案例描述"
+    }]
+  }]
+}

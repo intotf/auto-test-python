@@ -58,10 +58,10 @@ def hostConfigList():
     return render_template('host-config-list.html')
 
 
-# 添加任务页
-@app.route('/task-add')
-def taskAdd():
-    return render_template('task-add.html')
+# 编辑任务页
+@app.route('/task-edit')
+def taskEdit():
+    return render_template('task-edit.html')
 
 
 # 任务列表页

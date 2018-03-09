@@ -282,7 +282,7 @@
       /**
        * 获取分组列表
        */
-      axios.get('http://10.100.99.7:5585/group/get')    // /static/mock/group-list.json
+      axios.get(GLOBAL.IP + '/group/get')    // /static/mock/group-list.json
         .then(function (res) {
           app.groups = res.data.groups
         })
@@ -318,7 +318,7 @@
         this.$validator.validateAll().then(function (result) {
           if (result) {
             if (app.control.operate !== 'edit') {
-              axios.post('http://10.100.99.7:5585/data/savedata', {
+              axios.post(GLOBAL.IP + '/data/savedata', {
                 group_id: app.inface.group_id,
                 uri: app.inface.uri,
                 method: app.inface.method,

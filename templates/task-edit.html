@@ -32,7 +32,7 @@
 <div id="app">
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>添加任务</h2>
+            <h2>编辑任务</h2>
             <ol class="breadcrumb">
                 <li>
                     <a href="/" target="_top">主页</a>
@@ -41,7 +41,7 @@
                     <a href="task-list">任务列表</a>
                 </li>
                 <li>
-                    <strong>添加任务</strong>
+                    <strong>编辑任务</strong>
                 </li>
             </ol>
         </div>
@@ -71,7 +71,8 @@
                             <li v-for="(item, index) in task.task_flow">
                                 <div class="pull-right">
                                     <button class="btn btn-info btn-xs" type="button" data-toggle="modal"
-                                            data-target="#constructor" @click="taskInterfaceModal(index)">入参配置
+                                            data-target="#constructor" @click="taskInterfaceModal(item.api_id, index)">
+                                        入参配置
                                     </button>
                                 </div>
                                 <span class="m-l-xs">[[item.title]]</span>
@@ -79,8 +80,8 @@
                         </draggable>
                         <div class="row p-m">
                             <div class="col-sm-12 text-center">
-                                <button class="btn btn-primary" type="submit">保存内容</button>
-                                <button class="btn btn-white" type="submit">取消</button>
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存内容</button>
+                                <a href="task-list" class="btn btn-white"><i class="fa fa-reply"></i> 返回列表</a>
                             </div>
                         </div>
                     </form>
@@ -137,6 +138,7 @@
                                     <td>[[ rest[1] ]]</td>
                                     <td>
                                         <button type="button" class="btn btn-info btn-xs"
+                                                :class="{ 'btn-warning': !rest[2]}"
                                                 @click="syncConstructor(index, rest[2])">
                                             入参
                                         </button>
@@ -169,7 +171,8 @@
                                         <label class="col-sm-4 control-label">上行执行ID</label>
 
                                         <div class="col-sm-8">
-                                            <input placeholder="上行执行ID" class="form-control" type="text" v-model="constr.upload_id">
+                                            <input placeholder="上行执行ID" class="form-control" type="text"
+                                                   v-model="constr.upload_id">
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
@@ -177,7 +180,8 @@
                                         <label class="col-sm-4 control-label">要赋值字段</label>
 
                                         <div class="col-sm-8">
-                                            <input placeholder="要赋值字段" class="form-control" type="text" v-model="constr.field">
+                                            <input placeholder="要赋值字段" class="form-control" type="text"
+                                                   v-model="constr.field">
                                         </div>
                                     </div>
                                 </div>
@@ -187,7 +191,8 @@
                                         <label class="col-sm-4 control-label">数据库字段</label>
 
                                         <div class="col-sm-8">
-                                            <input placeholder="数据库字段" name="constr.database_field" class="form-control" type="text"
+                                            <input placeholder="数据库字段" name="constr.database_field" class="form-control"
+                                                   type="text"
                                                    v-model="constr.database_field">
                                         </div>
                                     </div>
@@ -196,7 +201,8 @@
                                         <label class="col-sm-4 control-label">SQL语句</label>
 
                                         <div class="col-sm-8">
-                                            <input placeholder="SQL语句" class="form-control" type="text" v-model="constr.sql">
+                                            <input placeholder="SQL语句" class="form-control" type="text"
+                                                   v-model="constr.sql">
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
@@ -229,8 +235,9 @@
                                             <label class="col-sm-4 control-label">配置描述</label>
 
                                             <div class="col-sm-8">
-                                                <input placeholder="配置描述" name="new_database.title" class="form-control" type="text"
-                                                       v-model="new_database.title" v-validate="'required'">
+                                                <input placeholder="配置描述" name="new_database.title" class="form-control"
+                                                       type="text"
+                                                       v-model="new_database.title">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -247,7 +254,8 @@
                                             <label class="col-sm-4 control-label">数据库地址</label>
 
                                             <div class="col-sm-8">
-                                                <input placeholder="数据库地址" class="form-control" type="text" v-model="new_database.url">
+                                                <input placeholder="数据库地址" class="form-control" type="text"
+                                                       v-model="new_database.url">
                                             </div>
                                         </div>
                                         <div class="form-group" v-show="new_database.type === 'mysql'">
@@ -262,7 +270,8 @@
                                             <label class="col-sm-4 control-label">数据库名</label>
 
                                             <div class="col-sm-8">
-                                                <input placeholder="数据库名" class="form-control" type="text" v-model="new_database.name">
+                                                <input placeholder="数据库名" class="form-control" type="text"
+                                                       v-model="new_database.name">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -302,13 +311,14 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </form>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">保存</button>
+                    <button type="button" class="btn btn-primary" @click="addConstructor">添加入参</button>
                 </div>
             </div>
         </div>
@@ -331,10 +341,7 @@
     el: '#app',
     delimiters: ['[[', ']]'],
     data: {
-      task: {
-        title: '',
-        task_flow: []
-      },
+      task: {},
       task_index: null,
       interfaces: [],
       database: [],
@@ -343,12 +350,33 @@
       // 入参配置临时变量
       constr: {},
       control: {
+        // 是否打开入参配置表单
         constructor_open: false
       },
       pages_control: {}
     },
     beforeCreate: function () {
-      this.$options.methods.getInterfaces()
+      var app = this
+
+      /**
+       * 获取TASK信息
+       */
+      axios.post(GLOBAL.IP + '/task/getdata', {
+        task_id: getUrlParam('id')
+      })
+        .then(function (res) {
+          if (res.data.code === 200) {
+            app.task = res.data.data
+          } else {
+            toastr.error(res.data.message)
+          }
+        })
+        .catch(function (error) {
+          toastr.error(error)
+        })
+
+      app.$options.methods.getInterfaces()
+      app.$options.methods.loadDatabaseConfig()
     },
     methods: {
       getInterfaces: function (group_id, page) {
@@ -359,7 +387,7 @@
         /**
          * 获取接口列表
          */
-        axios.get('/static/mock/task-interface-list.json', JSON.stringify(obj))
+        axios.post(GLOBAL.IP + '/data/getdata', JSON.stringify(obj))
           .then(function (res) {
             app.interfaces = res.data.tb_data
             app.pages_control = {
@@ -375,39 +403,124 @@
       /**
        * 打开入参配置弹窗
        * 把要配置入参的接口index存入task_index，以便Modal按需显示
+       * @param api_id
        * @param index
        */
-      taskInterfaceModal: function (index) {
-        this.task_index = index
-        this.control.constructor_open = false
+      taskInterfaceModal: function (api_id, index) {
+        var app = this
+        app.task_index = index
+        app.control.constructor_open = false
+
+        // 如果此任务流中的接口没有参数(restful)，则从服务端获取
+        if (!app.task.task_flow[index].restful) {
+          /**
+           * 获取API接口参数
+           */
+          axios.post(GLOBAL.IP + '/data/getparams', {
+            api_id: api_id
+          })
+            .then(function (res) {
+              if (res.data.code === 200) {
+                app.$set(app.task.task_flow[index], 'restful', res.data.data.restful)
+              } else {
+                toastr.error(res.data.message)
+              }
+            })
+            .catch(function (error) {
+              toastr.error(error)
+            })
+        }
+
       },
       /**
        * 同步选择的入参到constructor临时数据中
-       * @param index 点击时的数组index
+       * @param index 点击某入参时的数组index
        * @param obj 入参的对象
        */
       syncConstructor: function (index, obj) {
         var app = this
         app.control.constructor_open = true
+
+        // 任务流中具体接口的具体某个参数
+        // app.task.task_flow[app.task_index].restful[index]
         app.constr = {}
-        obj && (app.constr = obj)
+        this.$set(this.constr, 'arr_index', index)
+        var params = app.task.task_flow[app.task_index].restful[index][2]
+
+        if (params) {
+          app.constr = params
+        }
+      },
+      /**
+       * 添加入参
+       */
+      addConstructor: function () {
+        var app = this
+        var obj = {}
+
+        switch (app.constr.assign_type) {
+          case 'upload':
+            obj = {
+              assign_type: app.constr.assign_type,
+              upload_id: app.constr.upload_id,
+              field: app.constr.field
+            }
+            break
+          case 'database':
+            obj = {
+              assign_type: app.constr.assign_type,
+              database_field: app.constr.database_field,
+              sql: app.constr.sql,
+              database_type: app.constr.database_type,
+              database: app.constr.database
+            }
+            break
+          case 'normal':
+            obj = {
+              assign_type: app.constr.assign_type,
+              const_no: app.constr.const_no
+            }
+            break
+        }
+
+        app.task.task_flow[app.task_index].restful[app.constr.arr_index][2] = app.constr
+        app.$forceUpdate()
+        toastr.success('添加入参成功')
+        app.control.constructor_open = false
+      },
+      /**
+       * 获取数据库配置列表
+       */
+      loadDatabaseConfig: function () {
+        axios.get(GLOBAL.IP + '/env/get')
+          .then(function (res) {
+            app.database = res.data.database
+          })
+          .catch(function (error) {
+            toastr.error(error)
+          })
       },
       validateBeforeSubmit: function () {
         var app = this
 
-        function saveJSON (val) {
-          try {
-            JSON.parse(val)
-          } catch (err) {
-            return {}
-          }
-
-          return JSON.parse(val)
-        }
-
         this.$validator.validateAll().then(function (result) {
           if (result) {
-            alert(result)
+            axios.post(GLOBAL.IP + '/task/savetask', app.task)
+              .then(function (res) {
+                if (res.data.code === 200) {
+                  toastr.success('保存任务成功')
+                  setTimeout(function () {
+                      window.location = './task-list'
+                    }, 1000)
+                } else if (res.data.code === 202) {
+                  toastr.error('保存任务失败，请为已经拖入任务列表的用例设置入参配置！')
+                } else {
+                  toastr.error('保存任务失败')
+                }
+              })
+              .catch(function (error) {
+                toastr.error(error)
+              })
           } else {
 
           }

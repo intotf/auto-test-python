@@ -214,7 +214,7 @@
       /**
        * 获取分组列表
        */
-      axios.get('http://10.100.99.7:5585/group/get')    // /static/mock/group-list.json
+      axios.get(GLOBAL.IP + '/group/get')    // /static/mock/group-list.json
         .then(function (res) {
           app.groups = res.data.groups
         })
@@ -231,7 +231,7 @@
       },
       addGroup: function () {
         var app = this
-        axios.post('http://10.100.99.7:5585/group/post', {
+        axios.post(GLOBAL.IP + '/group/post', {
           group_name: this.new_group_name
         })
           .then(function (res) {
@@ -256,7 +256,7 @@
           id: id,
           group_name: app.new_group_name
         })
-        axios.post('http://10.100.99.7:5585/group/edit', {
+        axios.post(GLOBAL.IP + '/group/edit', {
           id: id,
           group_name: app.new_group_name
         })
@@ -282,7 +282,7 @@
       },
       deleteGroup: function (id, index) {
         var app = this
-        axios.post('http://10.100.99.7:5585/group/delete', {
+        axios.post(GLOBAL.IP + '/group/delete', {
           id: id
         })
           .then(function (res) {
@@ -299,7 +299,7 @@
       },
       deleteInterface: function (api_id, index) {
         var app = this
-        axios.post('http://10.100.99.7:5585/data/delete', {
+        axios.post(GLOBAL.IP + '/data/delete', {
           api_id: api_id
         })
           .then(function (res) {
@@ -322,7 +322,7 @@
         /**
          * 获取接口列表
          */
-        axios.post('http://10.100.99.7:5585/data/getdata', JSON.stringify(obj))
+        axios.post(GLOBAL.IP + '/data/getdata', JSON.stringify(obj))
           .then(function (res) {
             app.interfaces = res.data.tb_data
             app.pages_control = {

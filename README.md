@@ -41,10 +41,50 @@
 #### 2018.03.07
 1. 大概搭上添加任务的框架，定好任务管理的基本字段和基本流程。
 
+#### 2018.03.08
+1. 完成了任务列表的显示，任务添加。
+
+#### 2018.03.09
+1. 完成了任务编辑的入参配置，还差入参配置的raw显示。
+
+
 
 ## API
 ### 任务管理
+#### 任务列表
+地址：/task/tasklist  
+请求方式：传参POST，不传参GET
+
+返回值
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": [{
+    "task_id": "taskid",
+    "title": "任务描述",
+    "caselists": [{
+      "case_id": "api_id",
+      "case_title": "案例描述"
+    },{
+      "case_id": "api_id",
+      "case_title": "案例描述"
+    }]
+  },{
+    "task_id": "taskid",
+    "title": "任务描述",
+    "caselists": [{
+      "case_id": "api_id",
+      "case_title": "案例描述"
+    }]
+  }]
+}
+```
+
 #### 任务创建
+地址：/task/createtask  
+请求方式：POST  
+
 发送值
 ```json
 {
@@ -63,7 +103,10 @@
 }
 ```
 
-#### 任务编辑
+#### 任务明细（任务编辑）
+地址：/task/getdata  
+请求方式：POST
+
 发送值
 ```json
 {
@@ -109,70 +152,42 @@
 }
 ```
 
-#### 入参保存
+#### 任务明细 > 点击入参配置获取接口restful属性
+地址：/data/getparams  
+请求方式：POST
+
 发送值
 ```json
 {
-  "task_id": "task_id",
-  "api_id": "API-201802280003",
-  "restful": [
-    ["key", "value", {
-        "assign_type": "upload",
-        "upload_id": 777,
-        "field": "name1"
-      }
-    ],
-    ["key", "value", {
-        "assign_type": "database",
-        "database_field": "",
-        "sql": "SQL语句",
-        "database_type": "mysql",
-        "database": 301144446
-      }
-    ],
-    ["key", "value", {
-        "assign_type": "normal",
-        "const_no": "chinese_name"
-      }
-    ]
-  ]
+  "api_id": "api_id"
 }
 ```
-
 返回值
-> 如果麻烦，可以不返回data字段
 ```json
 {
   "code": 200,
-  "msg": "success",
+  "message": "success",
   "data": {
-    "api_id": "API-201802280003",
+    "api_id": "api_id",
+    "raw": "",
     "restful": [
-      ["key", "value", {
-          "assign_type": "upload",
-          "upload_id": 777,
-          "field": "name1"
-        }
-      ],
-      ["key", "value", {
-          "assign_type": "database",
-          "database_field": "",
-          "sql": "SQL语句",
-          "database_type": "mysql",
-          "database": 301144446
-        }
-      ],
-      ["key", "value", {
-          "assign_type": "normal",
-          "const_no": "chinese_name"
-        }
-      ]
+      ["key1", "value1"],
+      ["key2", "value2"],
+      ["key3", "value3"]
     ]
   }
 }
 ```
 
+
+#### 添加入参
+
+
+
 #### 任务保存
+地址：/task/savetask  
+请求方式：POS
+
 发送值
 ```json
 {
@@ -202,7 +217,10 @@
             "const_no": "chinese_name"
           }
         ]
-      ]
+      ],
+      "result": {
+        
+      }
     }
   ]
 }
@@ -218,6 +236,9 @@
 
 
 #### 任务删除
+地址：/task/deltask  
+请求方式：POST
+
 发送值
 ```json
 {

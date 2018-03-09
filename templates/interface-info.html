@@ -432,7 +432,7 @@
 
                                     <div class="col-sm-9">
                                         <input name="new_database.title" class="form-control" type="text"
-                                               v-model="new_database.title" v-validate="'required'">
+                                               v-model="new_database.title">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -519,7 +519,7 @@
 <script src="../static/js/plugins/json-viewer/jquery.json-viewer.js"></script>
 <script src="../static/js/main.js?v1"></script>
 <script>
-  Vue.use(VeeValidate)
+  // Vue.use(VeeValidate)
 
   var app = new Vue({
     el: '#app',
@@ -538,7 +538,7 @@
       /**
        * 获取API接口
        */
-      axios.post('http://10.100.99.7:5585/data/getdetail', {
+      axios.post(GLOBAL.IP + '/data/getdetail', {
         api_id: getUrlParam('id')
       })
         .then(function (res) {
@@ -582,7 +582,7 @@
        * 获取数据库配置列表
        */
       loadDatabaseConfig: function () {
-        axios.get('http://10.100.99.7:5585/env/get')
+        axios.get(GLOBAL.IP + '/env/get')
           .then(function (res) {
             app.database = res.data.database
           })
@@ -596,7 +596,7 @@
       addNewDatabase: function () {
         var app = this
 
-        axios.post('http://10.100.99.7:5585/env/insert', {
+        axios.post(GLOBAL.IP + '/env/insert', {
           title: app.new_database.title,
           type: app.new_database.type,
           url: app.new_database.url,
@@ -664,7 +664,7 @@
             break
         }
 
-        axios.post('http://10.100.99.7:5585/param/insert', obj)
+        axios.post(GLOBAL.IP + '/param/insert', obj)
           .then(function (res) {
             if (res.data) {
               toastr.success('保存入参成功')
@@ -679,7 +679,7 @@
       testDebug: function () {
         var app = this
 
-        axios.post('http://10.100.99.7:5585/debug', {
+        axios.post(GLOBAL.IP + '/debug', {
           api_id: getUrlParam('id'),
           url: app.inface.hostname
         })
