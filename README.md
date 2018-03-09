@@ -153,7 +153,7 @@
         ],
         "result": {
           "judge_type": "complete",
-          "result": "返回结果"
+          "prev_data": "返回结果"
         } 
       },{
         "api_id": "API-201802280003",
@@ -162,7 +162,7 @@
         "result": {
           "judge_type": "expect_match",
           "match_field": "匹配字段",
-          "result": "返回结果"
+          "prev_data": "返回结果"
         }
       },{
         "api_id": "API-201802280003",
@@ -175,7 +175,7 @@
           "database_type": "数据库类型",
           "database": "数据库配置",
           "return_key": "返回结果KEY",
-          "result": "返回结果"
+          "prev_data": "返回结果"
         } 
       },{
         "api_id": "API-201802280003",
@@ -185,7 +185,7 @@
           "judge_type": "execute_match",
           "execute_before":  [ "key", "value" ],
           "execute_after":  [ "key", "value" ],
-          "result": "返回结果"
+          "prev_data": "返回结果"
         } 
       }
     ]
