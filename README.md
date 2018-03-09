@@ -130,9 +130,6 @@
               "assign_type": "upload",
               "upload_id": 777,
               "field": "name1"
-            },{
-              "judge_type": "complete",
-              "result": "返回结果"
             }
           ],
           ["key", "value", {
@@ -141,36 +138,55 @@
               "sql": "SQL语句",
               "database_type": "mysql",
               "database": 301144446
-            },{
-              "judge_type": "expect_match",
-              "match_field": "匹配字段",
-              "result": "返回结果"
             }
           ],
           ["key", "value", {
               "assign_type": "normal",
               "const_no": "chinese_name"
-            },{
-              "judge_type": "database_match",
-              "database_field": "数据库字段",
-              "sql": "SQL语句",
-              "database_type": "数据库类型",
-              "database": "数据库配置",
-              "return_key": "返回结果KEY",
-              "result": "返回结果"
             }
           ],
           ["key", "value", {
               "assign_type": "normal",
               "const_no": "chinese_name"
-            },{
-              "judge_type": "execute_match",
-              "execute_before":  [ "key", "value" ],
-              "execute_after":  [ "key", "value" ],
-              "result": "返回结果"
             }
           ]
-        ]
+        ],
+        "result": {
+          "judge_type": "complete",
+          "result": "返回结果"
+        } 
+      },{
+        "api_id": "API-201802280003",
+        "title": "接口测试标题",
+        "restful": [],
+        "result": {
+          "judge_type": "expect_match",
+          "match_field": "匹配字段",
+          "result": "返回结果"
+        }
+      },{
+        "api_id": "API-201802280003",
+        "title": "接口测试标题",
+        "restful": [],
+        "result": {
+          "judge_type": "database_match",
+          "database_field": "数据库字段",
+          "sql": "SQL语句",
+          "database_type": "数据库类型",
+          "database": "数据库配置",
+          "return_key": "返回结果KEY",
+          "result": "返回结果"
+        } 
+      },{
+        "api_id": "API-201802280003",
+        "title": "接口测试标题",
+        "restful": [],
+        "result": {
+          "judge_type": "execute_match",
+          "execute_before":  [ "key", "value" ],
+          "execute_after":  [ "key", "value" ],
+          "result": "返回结果"
+        } 
       }
     ]
   }
